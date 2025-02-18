@@ -1,4 +1,4 @@
-# ♟️ Chischás! ♟️
+# ♟️ Chischás! ♟️ <span style="font-size: 16px;">por MiguelG7</span>
 
 ## 📑 Notion con documentación, planificación...
 🔗 [Visita más información (planificación...) aquí](https://quilt-spoonbill-e9e.notion.site/Chisch-s-por-Miguel-Gamboa-S-nchez-199dff0b3aca80ecb3c8e9e24a2b3d70)
