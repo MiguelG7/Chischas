@@ -9,4 +9,4 @@
 
 Si tienes cualquier consulta, puedes escribir a:
 - 📧 **miguel.gamboasanchez@usp.ceu.es**
-- 📧 **contacto.miguelgamboa@gmail**
+- 📧 **contacto.miguelgamboa@gmail.com**
