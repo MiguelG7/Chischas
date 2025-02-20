@@ -1,3 +1,10 @@
+<% if (!gameId){ %>
+    <title>Chischas!♟️</title>
+<% } %>
+<% if (gameId){ %>
+    <title>MATCH⚔️||Chischas!♟️</title>
+<% } %>
+
 <%- include('header') %>
 
 <script src="/javascript/chischas/pieces.js" defer></script>
@@ -8,7 +15,7 @@
 <form id="inicio_partida">
     <label>
         <button id="crearLink">Crear link de partida</button>
-        <p id="link"></p>
+        <p id="link"> Aún no se ha generado ningún link de partida</p>
     </label> <br>
     <label>
         <button>Unirse a una partida</button> <br>
