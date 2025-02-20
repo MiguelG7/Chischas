@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require("uuid"); // Importar UUID para generar IDs único
 
 // Página principal de "chischas"
 router.get('/', (req, res) => {
-    console.log("Entré a router.get('/') de /chischas");
     res.render('chischas' , { gameId: null });
 });
 
@@ -16,7 +15,9 @@ router.get('/id', (req, res) => {
 
 // Ruta de entrada a una partida con un ID específico
 router.get('/:id', (req, res) => {
+
     const gameId = req.params.id;
+    console.log("Entrando a /chischas/",gameId)
     res.render('chischas', { gameId }); // Carga una vista "partida.ejs"
 });
 
