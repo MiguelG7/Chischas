@@ -75,3 +75,15 @@
 #inicio_partida {
     font-size: 100%;
 }
+
+/* Aplica la animación a todos los elementos interactivos */
+button, a, input[type="button"], input[type="submit"], img {
+    display: inline-block;
+    transition: transform 0.1s ease-in-out;
+}
+
+/* Efecto de agrandamiento y vibración al pasar el cursor */
+button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, img:hover {
+    transform: scale(1.1);
+}
+
