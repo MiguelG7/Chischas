@@ -6,4 +6,8 @@ router.get('/', (req,res) =>{
     res.render('chischas');
 });
 
+router.get('/inicio_partida', (req,res) =>{
+    res.send('has entrado en /inicio_partida');
+});
+
 module.exports = router;

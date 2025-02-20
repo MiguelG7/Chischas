@@ -1,6 +1,6 @@
 <%- include('header') %>
 
-<form id="inicio_partida" action="inicio_partida">
+<form id="inicio_partida" action="chischas/inicio_partida">
     <label for="crear">
         <button>Crear link de partida</button> <br>
         <input type="text" placeholder="Aún no se ha generado el link de partida" readonly>
@@ -12,6 +12,8 @@
 </form>
 
 <div id="gameboard"></div>
+<ul id="messages"></ul>
 
 <script src="/javascript/chischas/pieces.js"></script>
 <script src="/javascript/chischas/chischas.js"></script>
+<script src="/javascript/chischas/conexion_socket.js"></script>
