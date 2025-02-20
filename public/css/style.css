@@ -53,3 +53,19 @@
     font-weight: 900; /* Peso más grueso */
     font-style: normal;
 }
+
+#gameboard {
+    width: 90vw;
+    height: 90vw;
+    max-width: 600px; /* Tamaño máximo */
+    max-height: 600px;
+    /*display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    */
+    
+}
+
+#inicio_partida {
+    font-size: 100%;
+}

@@ -16,6 +16,7 @@ app.use(express.json());//hace que se pueda usar req.body
 
 const indexRouter = require('./routes/index');
 const chischasRouter = require('./routes/chischas');
+const registroRouter = require('./routes/registro');
 
 app.use(session({
     secret: 'mi-secreto',
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
+app.use('/registro', registroRouter);
 
 const port = 3000;
 
