@@ -8,3 +8,15 @@ document.getElementById("crearLink").addEventListener("click", function(event) {
         })
         .catch(error => console.error("Error al generar la partida:", error));
 });
+
+document.getElementById("joinGameButton").addEventListener("click", function() {
+    const gameId = document.getElementById("gameIdInput").value;
+
+    if (!gameId) {
+        alert("Por favor, introduce un ID válido.");
+        return;
+    }
+
+    // Redirigir al usuario a la partida correspondiente
+    window.location.href = '/chischas/${gameId}';
+});
