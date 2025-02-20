@@ -44,18 +44,17 @@ app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+io.on("connection", (socket) => {
+  console.log("Un jugador se ha conectado.");
 
-   // Manejar mensajes de chat
-   socket.on('chat message', (msg) => {
-      console.log('Mensaje recibido:', msg);
-      io.emit('chat message', msg); // Enviar el mensaje a todos los clientes conectados
+  socket.on("joinGame", (gameId) => {
+      socket.join(gameId);
+      console.log(`Jugador unido a la partida ${gameId}`);
+      socket.emit("gameJoined", `Te has unido a la partida ${gameId}`);
   });
 
-  // Manejar desconexiones
-  socket.on('disconnect', () => {
-      console.log('Un usuario se ha desconectado:', socket.id);
+  socket.on("disconnect", () => {
+      console.log("Un jugador se ha desconectado.");
   });
 });
 

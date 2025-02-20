@@ -1,19 +1,32 @@
 <%- include('header') %>
 
-<form id="inicio_partida" action="chischas/inicio_partida">
-    <label for="crear">
-        <button>Crear link de partida</button> <br>
-        <input type="text" placeholder="Aún no se ha generado el link de partida" readonly>
+<% if (!gameId){ %>
+<form id="inicio_partida">
+    <label>
+        <button id="crearLink">Crear link de partida</button> <br>
+        <p id="link"></p>
     </label> <br>
-    <label for="unirse">
+    <label>
         <button>Unirse a una partida</button> <br>
         <input type="text" placeholder="Introduce el link de la partida">
     </label>
 </form>
+<% } %>
 
 <div id="gameboard"></div>
 <ul id="messages"></ul>
 
 <script src="/javascript/chischas/pieces.js"></script>
 <script src="/javascript/chischas/chischas.js"></script>
-<script src="/javascript/chischas/conexion_socket.js"></script>
+<script>
+document.getElementById("crearLink").addEventListener("click", function(event) {
+    event.preventDefault(); // Evita que el formulario se recargue
+
+    fetch("/chischas/id")
+        .then(response => response.url) // Obtiene la URL generada
+        .then(url => {
+            document.getElementById("link").innerHTML = `Conéctate a: <a href="${url}">${url}</a>`;
+        })
+        .catch(error => console.error("Error al generar la partida:", error));
+});
+</script>
