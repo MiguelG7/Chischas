@@ -1,5 +1,15 @@
 <%- include('header') %>
-Página de chischas
+
+<form action="inicio_partida_form">
+    <label for="crear">
+        <button>Crear link de partida</button> <br>
+        <input type="text" placeholder="Aún no se ha generado el link de partida" readonly>
+    </label> <br>
+    <label for="unirse">
+        <button>Unirse a una partida</button> <br>
+        <input type="text" placeholder="Introduce el link de la partida">
+    </label>
+</form>
 
 <div id="gameboard"></div>
 

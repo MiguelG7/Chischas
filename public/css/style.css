@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
+/* Clase para usar la fuente Orbitron con diferentes pesos */
+* /*.orbitron-light*/ {
+    text-align: center;
+    color: aliceblue;
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 200%; /* Peso ligero */
+    font-style: normal;
+    background-color: black;
+}
+
+#titulo {
+    font-size: 250%;
+    color: rgb(255, 211, 17);
+    margin-bottom: 0%;
+    padding: 0%;
+}
+
+#autor {
+    margin-top: 0%;
+    font-size: 85%;
+}
+
+.topnav {
+    padding: 0.4%;
+    margin-bottom: 0.4%;
+    background-color: rgb(197, 162, 8);
+}
+
+.topnav a {
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.topnav a.active {
+    background-color: yellow; /* Cambia el color según lo necesites */
+    color: black;
+}
+
+.orbitron-regular {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* Peso medio */
+    font-style: normal;
+}
+
+.orbitron-bold {
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 900; /* Peso más grueso */
+    font-style: normal;
+}
