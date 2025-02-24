@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
 
+a {
+    color: rgb(243, 220, 120); /* Color inicial del enlace */
+}
+
+
 /* Clase para usar la fuente Orbitron con diferentes pesos */
 * /*.orbitron-light*/ {
     text-align: center;
@@ -33,6 +38,7 @@
     text-decoration: none;
     padding: 10px 15px;
     display: inline-block;
+    color: white;
 }
 
 .topnav a.active {
@@ -76,10 +82,17 @@
     font-size: 100%;
 }
 
+form {
+    display: inline-block;
+    border: 2px solid rgb(255, 255, 255);
+    padding: 0.5%; /* Espaciado interno */
+}
+
 /* Aplica la animación a todos los elementos interactivos */
 button, a, input[type="button"], input[type="submit"], img {
     display: inline-block;
     transition: transform 0.1s ease-in-out;
+    animation: led-glow 0.35s infinite alternate; /* Aplica la animación */
 }
 
 /* Efecto de agrandamiento y vibración al pasar el cursor */
@@ -87,3 +100,18 @@ button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, i
     transform: scale(1.1);
 }
 
+
+@keyframes led-glow {
+    0% {
+        text-shadow: 0 0 5px rgba(243, 220, 120, 0.5), 
+                     0 0 10px rgba(243, 220, 120, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 10px rgba(243, 220, 120, 0.8), 
+                     0 0 20px rgba(243, 220, 120, 0.5);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(243, 220, 120, 1), 
+                     0 0 30px rgba(243, 220, 120, 0.7);
+    }
+}
