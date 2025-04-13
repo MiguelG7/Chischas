@@ -15,10 +15,7 @@
 ![Estrellas](https://img.shields.io/github/stars/MiguelG7/TFG?color=FFD311&style=for-the-badge)
 
 ## 🛠️ Tecnologías usadas
-
-
 <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=MiguelG7&repo=Chischas&layout=compact&title_color=FFD311&text_color=FFD311&bg_color=000000&border_color=FFD311" alt="Lenguajes del proyecto" />
-
 
 ![Node.js](https://img.shields.io/badge/Node.js-FFD311?style=for-the-badge&logo=node.js&logoColor=black)
 ![Express](https://img.shields.io/badge/Express-FFD311?style=for-the-badge&logo=express&logoColor=black)
@@ -39,13 +36,6 @@ Ambas bibliotecas son utilizadas conforme a sus respectivas licencias de código
 Agradecimientos a los desarrolladores originales:
 - Jeff Hlywa (`chess.js`)
 - Chris Oakman (`chessboard.js`)
-
-
-## 📑 Notion con documentación, planificación...
-🔗 [Visita más información (planificación...) aquí](https://quilt-spoonbill-e9e.notion.site/Chisch-s-por-Miguel-Gamboa-S-nchez-199dff0b3aca80ecb3c8e9e24a2b3d70)
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=MiguelG7&repo=Chischas&theme=github-compact&color=FFD311&line=FFD311&bg_color=000000" alt="Activity Graph" />
-</p>
 
 ## 💬 Flujo de Chischás!
 ![Flujo de Chischás!](/info/Flujo%20de%20Chischás.png)
