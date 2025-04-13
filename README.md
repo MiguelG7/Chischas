@@ -44,4 +44,4 @@ Agradecimientos a los desarrolladores originales:
 Si tienes cualquier consulta, puedes escribir a:
 - 📧 **miguel.gamboasanchez@usp.ceu.es**
 - 📧 **contacto.miguelgamboa@gmail.com**
-¡o no dudes en abrir un issue!
+- ¡o no dudes en abrir un issue!
