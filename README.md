@@ -1,4 +1,8 @@
-# ♟️ Chischás! ♟️ por MiguelG7
+# ♟️ Chischás! ♟️ hecho por MiguelG7
+<a href="https://github.com/MiguelG7">
+  <img src="https://readme-typing-svg.demolab.com?lines=¡JUEGA+CHESS+EN+UN+CHÁS!+(っᵔ◡ᵔ)っ ♝ ♖ ♞ ♙ ♚&font=Fira+Code&center=false&width=650&height=50&color=FFD311&vCenter=true&pause=1000&size=22&background=00000000" />
+</a>
+
 
 ![Último commit](https://img.shields.io/github/last-commit/MiguelG7/TFG?color=FFD311&label=Último%20commit&style=for-the-badge&logo=github&logoColor=white)
 ![Issues abiertas](https://img.shields.io/github/issues/MiguelG7/TFG?color=FFD311&style=for-the-badge)
