@@ -56,7 +56,13 @@ io.on("connection", (socket) => {
     socket.on("joinGame", ({ gameId, playerName }) => {
         if (!games[gameId]) {
             // Crear una nueva partida si no existe
-            games[gameId] = { players: [], turn: 'w', playerNames: {} };
+            games[gameId] = { 
+                players: [], 
+                turn: 'w', 
+                playerNames: {}, 
+                history: [], // Historial de movimientos
+                fen: null // Estado actual del tablero
+            };
         }
 
         const game = games[gameId];
@@ -71,6 +77,14 @@ io.on("connection", (socket) => {
         game.playerNames[socket.id] = playerName;
         socket.join(gameId);
         console.log(`Jugador ${playerName} unido a la partida ${gameId}`);
+
+        // Enviar el estado actual del juego al cliente
+        socket.emit("gameState", { 
+            fen: game.fen, 
+            history: game.history, 
+            turn: game.turn, 
+            playerNames: game.playerNames 
+        });
 
         // Asignar colores al azar cuando haya dos jugadores
         if (game.players.length === 2) {
@@ -101,7 +115,9 @@ io.on("connection", (socket) => {
         const game = games[gameId];
         if (!game) return;
 
-        // Cambiar el turno
+        // Actualizar el historial y el estado del juego
+        game.history.push(move);
+        game.fen = move.fen; // Actualizar el estado del tablero
         game.turn = game.turn === 'w' ? 'b' : 'w';
 
         // Enviar el movimiento al oponente

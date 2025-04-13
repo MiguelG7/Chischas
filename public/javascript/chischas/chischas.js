@@ -23,10 +23,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const colorSortingModal = document.getElementById('color-sorting-modal');
         colorSortingModal.classList.remove('hidden');
 
+        // Mostrar mensajes en un modal
+        const showMessage = (message, duration = 3000) => {
+            const messageModal = document.getElementById('message-modal');
+            const messageContent = messageModal.querySelector('.message-content');
+            messageContent.textContent = message;
+            messageModal.classList.remove('hidden');
+
+            setTimeout(() => {
+                messageModal.classList.add('hidden');
+            }, duration);
+        };
+
         // Esperar al rival
         socket.on("waitingForOpponent", (message) => {
             console.log(message);
-            alert(message);
+            showMessage(message);
         });
 
         // Verificar si ambos jugadores han ingresado sus nombres
@@ -41,8 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Mostrar animación épica de "versus"
             const vsModal = document.getElementById('vs-modal');
-            vsModal.querySelector('#player1-name').textContent = playerName;
-            vsModal.querySelector('#player2-name').textContent = opponentName;
+            vsModal.querySelector('#player1-name').textContent = playerName + (color === 'w' ? ' blancas' : ' negras');
+            
+            vsModal.querySelector('#player2-name').textContent = opponentName + (color === 'w' ? ' negras' : ' blancas');
             vsModal.classList.remove('hidden');
 
             // Iniciar cuenta atrás sincronizada
@@ -107,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
 
                     // Mostrar el color asignado
-                    alert(`¡La partida ha comenzado! Tú juegas con las ${playerColor === 'w' ? 'blancas' : 'negras'}.`);
+                    showMessage(`¡La partida ha comenzado! Tú juegas con las ${playerColor === 'w' ? 'blancas' : 'negras'}.`);
                 }
             }, 1000); // Actualizar cada segundo
         });
@@ -121,7 +134,24 @@ document.addEventListener('DOMContentLoaded', function () {
         // Manejar desconexión del oponente
         socket.on("opponentDisconnected", (message) => {
             console.log(message);
-            alert(message);
+            showMessage(message);
+        });
+
+        // Escuchar el estado del juego
+        socket.on("gameState", ({ fen, history, turn, playerNames }) => {
+            if (fen) {
+                chess = new Chess(fen); // Restaurar el estado del juego
+                board.position(fen); // Actualizar el tablero
+            }
+
+            // Mostrar el historial de movimientos
+            const historyElement = document.getElementById('history');
+            historyElement.innerHTML = ''; // Limpiar el historial
+            history.forEach(move => {
+                const moveElement = document.createElement('p');
+                moveElement.textContent = move;
+                historyElement.appendChild(moveElement);
+            });
         });
     }
 });

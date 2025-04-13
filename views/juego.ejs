@@ -1,8 +1,20 @@
 <link rel="stylesheet" href="/chessboardjs/www/css/chessboard.css">
 <link rel="stylesheet" href="/css/style.css">
 
-<div id="board-container">
-    <div id="board1"></div>
+<div id="game-container">
+    <div id="history-container">
+        <h3>Historial de movimientos</h3>
+        <div id="history"></div>
+    </div>
+    <div id="board-container">
+        <div id="board1"></div>
+    </div>
+    <div id="chat-container">
+        <h3>Chat</h3>
+        <div id="chat-messages"></div>
+        <input id="chat-input" type="text" placeholder="Escribe un mensaje...">
+        <button id="send-chat">Enviar</button>
+    </div>
 </div>
 
 <div id="color-sorting-modal" class="hidden">

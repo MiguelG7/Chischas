@@ -120,10 +120,28 @@ button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, i
     background-color: transparent !important;
 }
 
-#board-container {
+#game-container {
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;    /* Centra verticalmente */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+#history-container, #chat-container {
+    width: 20%;
+    max-height: 600px;
+    overflow-y: auto;
+    background-color: #000000;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#board-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total */
     overflow: hidden;       /* Evita que el contenido se salga del contenedor */
 }
