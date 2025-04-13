@@ -15,8 +15,8 @@ app.set('view engine','ejs');
 app.set('views','./views');
 
 // Sirve archivos estáticos desde node_modules
-app.use('/chessboardjs', express.static('node_modules/chessboardjs'));
-app.use('/chessjs', express.static('node_modules/chess.js'));
+app.use('/chessboardjs', express.static('chess_engine/chessboardjs'));
+app.use('/chessjs', express.static('chess_engine/chess.js'));
 app.use('/socket.io-client', express.static('node_modules/socket.io-client/dist'));
 
 app.locals.title = process.env.TITLE_ENV;
