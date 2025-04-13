@@ -31,7 +31,7 @@ a {
 .topnav {
     padding: 0.4%;
     margin-bottom: 0.4%;
-    background-color: rgb(197, 162, 8);
+    background-color: rgb(255, 211, 17);
 }
 
 .topnav a {
@@ -107,11 +107,11 @@ button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, i
                      0 0 10px rgba(243, 220, 120, 0.3);
     }
     50% {
-        text-shadow: 0 0 10px rgba(243, 220, 120, 0.8), 
+        text-shadow: 0 0 10px rgb(255, 211, 17), 
                      0 0 20px rgba(243, 220, 120, 0.5);
     }
     100% {
-        text-shadow: 0 0 15px rgba(243, 220, 120, 1), 
+        text-shadow: 0 0 15px rgb(255, 211, 17), 
                      0 0 30px rgba(243, 220, 120, 0.7);
     }
 }
