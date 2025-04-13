@@ -1,11 +1,14 @@
 {
   "dependencies": {
+    "chess.js": "^1.2.0",
+    "chessboardjs": "^0.0.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "uuid": "^11.1.0"
   }
 }

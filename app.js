@@ -14,6 +14,10 @@ app.use(express.static('public'));//hace que public sea el comienzo de la ruta r
 app.set('view engine','ejs');
 app.set('views','./views');
 
+// Sirve archivos estáticos desde node_modules
+app.use('/chessboardjs', express.static('node_modules/chessboardjs'));
+app.use('/chessjs', express.static('node_modules/chess.js'));
+app.use('/socket.io-client', express.static('node_modules/socket.io-client/dist'));
 
 app.locals.title = process.env.TITLE_ENV;
 
@@ -45,21 +49,24 @@ app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
 
 io.on("connection", (socket) => {
-  console.log("Un jugador se ha conectado.");
+    console.log("Un jugador se ha conectado.");
 
-  socket.on("joinGame", (gameId) => {
-      socket.join(gameId);
-      console.log(`Jugador unido a la partida ${gameId}`);
-      socket.emit("gameJoined", `Te has unido a la partida ${gameId}`);
-  });
+    socket.on("joinGame", (gameId) => {
+        socket.join(gameId);
+        console.log(`Jugador unido a la partida ${gameId}`);
+        socket.to(gameId).emit("playerJoined", "Otro jugador se ha unido a la partida.");
+    });
 
-  socket.on("disconnect", () => {
-      console.log("Un jugador se ha desconectado.");
-  });
+    socket.on("move", ({ gameId, move }) => {
+        console.log(`Movimiento en partida ${gameId}:`, move);
+        socket.to(gameId).emit("opponentMove", move);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Un jugador se ha desconectado.");
+    });
 });
 
-const port = 3000;
-
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}, access: http://localhost:${port}`);  
+server.listen(3000, () => {
+    console.log("Servidor escuchando en http://localhost:3000");
 });

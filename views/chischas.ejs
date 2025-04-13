@@ -7,11 +7,8 @@
 
 <%- include('header') %>
 
-<script src="/javascript/chischas/pieces.js" defer></script>
-<script src="/javascript/chischas/chischas.js" defer></script>
-<script src="/javascript/chischas/conexion/crearLink.js" defer></script>
-
 <% if (!gameId){ %>
+<script src="/javascript/chischas/conexion/crearLink.js" defer></script>
 <form id="inicio_partida">
     <label>
         <button id="crearLink">Crear link de partida</button>
@@ -26,7 +23,7 @@
 
 <% if (gameId){ %>
 <p> Id de partida: <%=gameId %></p>
+<%- include('juego') %>
 <% } %>
 
-<div id="gameboard"></div>
 <ul id="messages"></ul>

@@ -115,3 +115,23 @@ button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, i
                      0 0 30px rgba(243, 220, 120, 0.7);
     }
 }
+
+#board1 img {
+    background-color: transparent !important;
+}
+
+#board-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total */
+    overflow: hidden;       /* Evita que el contenido se salga del contenedor */
+}
+
+#board1 {
+    width: 130vmin;          /* El tablero ocupará el 90% del lado más pequeño de la pantalla */
+    height: 130vmin;         /* Mantiene el tablero cuadrado */
+    max-width: 600px;       /* Tamaño máximo del tablero */
+    max-height: 600px;      /* Tamaño máximo del tablero */
+    aspect-ratio: 1 / 1;    /* Mantiene la proporción cuadrada */
+}

@@ -1,34 +1,45 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const gameBoard = document.querySelector("#gameboard");
-    const filas = 8, columnas = 8;
-    const letras = ["a", "b", "c", "d", "e", "f", "g", "h"];
+// filepath: c:\Users\migue\OneDrive - Fundación Universitaria San Pablo CEU\4to año\TFG\TFG\public\javascript\chischas\chischas.js
+import { Chess } from '/chessjs/dist/esm/chess.js';
 
-    // Configurar el tablero con grid responsivo
-    gameBoard.style.display = "grid";
-    gameBoard.style.gridTemplateColumns = "repeat(8, 12.5%)"; // Cada casilla ocupa el 12.5% del ancho total
-    gameBoard.style.gridTemplateRows = "repeat(8, 12.5%)"; // Cada casilla ocupa el 12.5% de la altura total
-    gameBoard.style.width = "90vmin"; // Ancho del tablero adaptado al tamaño de la pantalla
-    gameBoard.style.height = "90vmin"; // Altura del tablero adaptada al tamaño de la pantalla
-    gameBoard.style.border = "2px solid black";
-    gameBoard.style.margin = "auto"; // Centra el tablero en la pantalla
+const socket = io(); // Inicializa el cliente de Socket.IO
 
-    for (let fila = 0; fila < filas; fila++) {
-        for (let col = 0; col < columnas; col++) {
-            const square = document.createElement("div");
-            square.classList.add("square");
-            square.style.width = "100%"; // Cada casilla ocupa el 100% de su celda
-            square.style.height = "100%"; // La casilla llena completamente la celda
-            square.style.display = "flex";
-            square.style.alignItems = "center";
-            square.style.justifyContent = "center";
-            square.style.fontSize = "2vmin"; // Tamaño del texto relativo a la pantalla
-            square.dataset.position = `${letras[col]}${8 - fila}`; // Asigna coordenadas
+socket.on("connect", () => {
+    console.log("Conectado al servidor de Socket.IO con ID:", socket.id);
+});
 
-            // Alterna los colores de las casillas
-            square.style.backgroundColor = (fila + col) % 2 === 0 ? "#EEEED2" : "#769656";
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementById('board1')) {
+        const chess = new Chess();
+        const gameId = window.location.pathname.split('/').pop(); // Obtiene el ID de la partida desde la URL
 
-            gameBoard.appendChild(square);
-        }
+        // Unirse a la partida
+        socket.emit("joinGame", gameId);
+
+        const board = ChessBoard('board1', {
+            draggable: true,
+            position: 'start',
+            pieceTheme: '/chessboardjs/www/img/chesspieces/wikipedia/{piece}.png',
+            onDrop: (source, target) => {
+                const move = chess.move({
+                    from: source,
+                    to: target,
+                    promotion: 'q', // Promoción automática a reina
+                });
+
+                if (move === null) return 'snapback'; // Movimiento inválido
+
+                board.position(chess.fen()); // Actualiza el tablero
+
+                // Enviar el movimiento al oponente
+                socket.emit("move", { gameId, move });
+            },
+        });
+
+        // Escuchar movimientos del oponente
+        socket.on("opponentMove", (move) => {
+            chess.move(move); // Actualiza la lógica del juego
+            board.position(chess.fen()); // Actualiza el tablero
+        });
     }
 });
 
