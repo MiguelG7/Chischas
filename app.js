@@ -48,22 +48,77 @@ app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
 
+const games = {}; // Objeto para almacenar el estado de las partidas
+
 io.on("connection", (socket) => {
     console.log("Un jugador se ha conectado.");
 
-    socket.on("joinGame", (gameId) => {
+    socket.on("joinGame", ({ gameId, playerName }) => {
+        if (!games[gameId]) {
+            // Crear una nueva partida si no existe
+            games[gameId] = { players: [], turn: 'w', playerNames: {} };
+        }
+
+        const game = games[gameId];
+
+        if (game.players.length >= 2) {
+            socket.emit("errorMessage", "La partida ya está llena.");
+            return;
+        }
+
+        // Añadir al jugador a la partida
+        game.players.push(socket.id);
+        game.playerNames[socket.id] = playerName;
         socket.join(gameId);
-        console.log(`Jugador unido a la partida ${gameId}`);
-        socket.to(gameId).emit("playerJoined", "Otro jugador se ha unido a la partida.");
+        console.log(`Jugador ${playerName} unido a la partida ${gameId}`);
+
+        // Asignar colores al azar cuando haya dos jugadores
+        if (game.players.length === 2) {
+            const [player1, player2] = game.players;
+            const colors = Math.random() < 0.5 ? ['w', 'b'] : ['b', 'w'];
+
+            // Enviar colores y nombres a ambos jugadores
+            io.to(player1).emit("colorAssignment", {
+                color: colors[0],
+                opponentName: game.playerNames[player2],
+            });
+            io.to(player2).emit("colorAssignment", {
+                color: colors[1],
+                opponentName: game.playerNames[player1],
+            });
+
+            // Notificar que la cuenta atrás debe comenzar
+            setTimeout(() => {
+                io.to(gameId).emit("startCountdown");
+            }, 1000); // Espera 1 segundo antes de iniciar la cuenta atrás
+        } else {
+            // Notificar al jugador que está esperando
+            socket.emit("waitingForOpponent", "Esperando a que se una el rival...");
+        }
     });
 
     socket.on("move", ({ gameId, move }) => {
-        console.log(`Movimiento en partida ${gameId}:`, move);
+        const game = games[gameId];
+        if (!game) return;
+
+        // Cambiar el turno
+        game.turn = game.turn === 'w' ? 'b' : 'w';
+
+        // Enviar el movimiento al oponente
         socket.to(gameId).emit("opponentMove", move);
     });
 
     socket.on("disconnect", () => {
         console.log("Un jugador se ha desconectado.");
+        for (const gameId in games) {
+            const game = games[gameId];
+            game.players = game.players.filter((id) => id !== socket.id);
+
+            // Si no quedan jugadores, eliminar la partida
+            if (game.players.length === 0) {
+                delete games[gameId];
+            }
+        }
     });
 });
 

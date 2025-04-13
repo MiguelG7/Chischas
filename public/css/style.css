@@ -135,3 +135,90 @@ button:hover, a:hover, input[type="button"]:hover, input[type="submit"]:hover, i
     max-height: 600px;      /* Tamaño máximo del tablero */
     aspect-ratio: 1 / 1;    /* Mantiene la proporción cuadrada */
 }
+
+#color-sorting-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#color-sorting-animation {
+    text-align: center;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+}
+
+.spinner {
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none !important; /* Asegúrate de que el elemento no se muestre */
+}
+
+#vs-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+}
+
+#vs-animation h1 {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.vs {
+    color: rgb(255, 211, 17);
+    font-size: 3rem;
+    margin: 0 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#countdown {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}

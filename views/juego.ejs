@@ -5,6 +5,19 @@
     <div id="board1"></div>
 </div>
 
+<div id="color-sorting-modal" class="hidden">
+    <div id="color-sorting-animation">
+        <p>Decidiendo tu color...</p>
+        <div class="spinner"></div>
+    </div>
+</div>
+
+<div id="vs-modal" class="hidden">
+    <div id="vs-animation">
+        <h1><span id="player1-name"></span> <span class="vs">VS</span> <span id="player2-name"></span></h1>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
 <script src="/chessboardjs/www/js/chessboard.js" defer></script>
 <script src="/socket.io-client/socket.io.js" defer></script> <!-- Cliente de Socket.IO -->
