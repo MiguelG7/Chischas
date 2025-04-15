@@ -36,7 +36,7 @@ Agradecimientos a los desarrolladores originales:
 - Jeff Hlywa (`chess.js`)
 - Chris Oakman (`chessboard.js`)
 
-## Instalación
+## 🟡 Instalación
 
 1. Clona y accede el repositorio
    ```bash
