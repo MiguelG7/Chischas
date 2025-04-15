@@ -4,8 +4,6 @@
 </a>
 
 ![Tamaño](https://img.shields.io/github/repo-size/MiguelG7/Chischas?color=FFD311)
-![GitHub](https://img.shields.io/github/license/MiguelG7/Chischas?color=FFD311)
-![GitHub repo file count](https://img.shields.io/github/directory-file-count/MiguelG7/Chischas?color=FFD311)
 ![GitHub top language](https://img.shields.io/github/languages/top/MiguelG7/Chischas?color=FFD311)
 
 
