@@ -38,12 +38,20 @@ Agradecimientos a los desarrolladores originales:
 - Jeff Hlywa (`chess.js`)
 - Chris Oakman (`chessboard.js`)
 
-## Installation
+## Instalación
 
-1. Clone the repository:
+1. Clona y accede el repositorio
    ```bash
-    git clone https://github.com/MiguelG7/Chischas.git    
-
+    git clone https://github.com/MiguelG7/Chischas.git
+    cd Chischas    
+    ```
+2. Instala las dependencias (las dependencias del motor de juego viene por defecto en /chess_engine)
+    ```bash
+    npm update  
+    ```
+3. Ejecuta Chischas en local :D
+    ```bash
+    npm app.js 
     ```
 
 
