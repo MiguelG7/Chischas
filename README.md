@@ -50,10 +50,10 @@ Agradecimientos a los desarrolladores originales:
     ```
 4. Crea un archivo `.env` en la raíz del proyecto basado en el archivo `.env.example`. Por ejemplo:
 
-```properties
-TITLE_ENV="Chischás!"
-MONGO_URI="mongodb://localhost:3000/chischas"
-```
+    ```properties
+    TITLE_ENV="Chischás!"
+    MONGO_URI="mongodb://localhost:3000/chischas"
+    ```
 
 3. Ejecuta Chischas en local :D
     ```bash
