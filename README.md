@@ -1,11 +1,12 @@
 # ♟️ Chischás! ♟️ hecho por MiguelG7(◣_◢) 
 <a href="https://github.com/MiguelG7">
-  <img src="https://readme-typing-svg.demolab.com?lines=JUEGA+CHESS+EN+UN+CHAS;www.chischas.xyz+(en+desarrollo)&font=Fira+Code&center=false&width=650&height=50&color=FFD311&vCenter=true&pause=1000&size=22&background=00000000" />
+  <img src="https://readme-typing-svg.demolab.com?lines=JUEGA+CHESS+EN+UN+CHAS;AJEDREZ+CON+AMIGOS+EN+2+CLICKS;www.chischas.xyz+(en+desarrollo)&font=Fira+Code&center=false&width=650&height=50&color=FFD311&vCenter=true&pause=1000&size=22&background=00000000" />
 </a>
+
+[www.chischas.xyz](www.chischas.xyz)
 
 ![Tamaño](https://img.shields.io/github/repo-size/MiguelG7/Chischas?color=FFD311)
 ![GitHub top language](https://img.shields.io/github/languages/top/MiguelG7/Chischas?color=FFD311)
-
 
 ![Último commit](https://img.shields.io/github/last-commit/MiguelG7/TFG?color=FFD311&label=Último%20commit&style=for-the-badge&logo=github&logoColor=white)
 ![Issues abiertas](https://img.shields.io/github/issues/MiguelG7/TFG?color=FFD311&style=for-the-badge)
