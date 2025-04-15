@@ -3,6 +3,14 @@ const session = require('express-session');
 const app = express();
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Conectado a MongoDB'))
+  .catch((err) => console.error('Error al conectar a MongoDB:', err));
 
 //sockets
 const http = require('http');
@@ -21,12 +29,18 @@ app.use('/socket.io-client', express.static('node_modules/socket.io-client/dist'
 
 app.locals.title = process.env.TITLE_ENV;
 
+const appTitle = process.env.TITLE_ENV || "Chischás!";
+
 app.use(express.urlencoded({ extended: true }));//hace que se pueda usar req.body
 app.use(express.json());//hace que se pueda usar req.body
 
 const indexRouter = require('./routes/index');
 const chischasRouter = require('./routes/chischas');
 const registroRouter = require('./routes/registro');
+const loginRouter = require('./routes/login');
+const partidasRouter = require('./routes/partidas');
+const logoutRouter = require('./routes/logout');
+const perfilRouter = require('./routes/perfil');
 
 app.use(session({
     secret: 'mi-secreto',
@@ -47,6 +61,10 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
+app.use('/login', loginRouter);
+app.use('/partidas', partidasRouter);
+app.use('/logout', logoutRouter);
+app.use('/perfil', perfilRouter);
 
 const games = {}; // Objeto para almacenar el estado de las partidas
 

@@ -1,23 +1,19 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <%- include('header') %>
-Página de registro en desarrollo...
+Página de inicio de sesión...
 <br>
 
-<form id="registro" action="/registro" method="POST">
+<form id="login" action="/login" method="POST">
     <label for="email">
         <p>Introduce tu email:</p>
         <input type="email" name="email" placeholder="chischas@chischas.xyz" required>
     </label> <br>
-    <label for="user">
-        <p>Introduce tu nombre</p>
-        <input name="name" placeholder="chischas_user" required>
-    </label> <br>
-    <label for="contrasena">
+    <label for="password">
         <p>Introduce tu contraseña</p>
         <input type="password" name="password" required>
     </label> <br> <br>
     <label for="submit">
-        <input type="submit" value="Registrarse">
+        <input type="submit" value="Iniciar sesión">
     </label> <br>
 </form>

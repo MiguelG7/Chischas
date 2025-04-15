@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="/css/style.css">
+
+<%- include('header') %>
+<h1>Perfil de Usuario</h1>
+<p><strong>Nombre:</strong> <%= user.name %></p>
+<p><strong>Email:</strong> <%= user.email %></p>
+<p><strong>Partidas Totales:</strong> <%= user.totalGames %></p>
+<p><strong>Partidas Ganadas:</strong> <%= user.wins %></p>
+<p><strong>Partidas Perdidas:</strong> <%= user.losses %></p>
+<p><strong>Partidas Empatadas:</strong> <%= user.draws %></p>
+<p><strong>Fecha de Registro:</strong> <%= user.registrationDate.toLocaleDateString() %></p>
+<p><strong>Último Inicio de Sesión:</strong> <%= user.lastLogin ? user.lastLogin.toLocaleDateString() : 'Nunca' %></p>
+
+<a href="/logout">Cerrar Sesión</a>

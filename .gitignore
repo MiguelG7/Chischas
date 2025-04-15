@@ -22,3 +22,6 @@ logs
 *.log
 yarn.lock
 package-lock.json
+
+# Archivo .gitignore
+.env
