@@ -1,0 +1,5 @@
+´´´
+cd .\Chischas\
+npm update
+node .\app.js
+´´´
