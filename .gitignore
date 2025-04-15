@@ -12,13 +12,6 @@ yarn-error.log*
 *.sublime-project
 *.sublime-workspace
 
-# Environment variables
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-
 # OS generated files
 .DS_Store
 Thumbs.db
