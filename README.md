@@ -1,4 +1,4 @@
-# ♟️ Chischás! ♟️ hecho por MiguelG7
+# ♟️ Chischás! ♟️ hecho por MiguelG7(◣_◢)
 <a href="https://github.com/MiguelG7">
   <img src="https://readme-typing-svg.demolab.com?lines=JUEGA+CHESS+EN+UN+CHAS;www.chischas.xyz+(en+desarrollo)&font=Fira+Code&center=false&width=650&height=50&color=FFD311&vCenter=true&pause=1000&size=22&background=00000000" />
 </a>
