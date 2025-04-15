@@ -38,6 +38,15 @@ Agradecimientos a los desarrolladores originales:
 - Jeff Hlywa (`chess.js`)
 - Chris Oakman (`chessboard.js`)
 
+## Installation
+
+1. Clone the repository:
+   ```bash
+    git clone https://github.com/MiguelG7/Chischas.git    
+
+    ```
+
+
 ## 📅 Planificición e info
 [Nuestro notion](https://quilt-spoonbill-e9e.notion.site/Chisch-s-199dff0b3aca80ecb3c8e9e24a2b3d70?pvs=74)
 <p align="center">
