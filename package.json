@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "chess.js": "^1.2.0",
-    "chessboardjs": "^0.0.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
