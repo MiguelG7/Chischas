@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 
         // Establecer la sesión del usuario
         req.session.userId = user._id;
-        res.status(200).send('Inicio de sesión exitoso.');
+        res.redirect('/perfil');
     } catch (err) {
         console.error('Error al iniciar sesión:', err);
         res.status(500).send('Error al iniciar sesión.');

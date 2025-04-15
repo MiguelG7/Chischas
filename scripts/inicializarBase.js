@@ -22,7 +22,7 @@ async function initializeDatabase() {
             console.log('La colección "users" ya existe.');
         }
 
-        // Verificar si la colección "partidas" existe
+        // Verificar si la colección "games" existe
         const gameCollectionExists = await mongoose.connection.db.listCollections({ name: 'games' }).hasNext();
         if (!gameCollectionExists) {
             console.log('Creando colección "games"...');
@@ -40,4 +40,4 @@ async function initializeDatabase() {
     }
 }
 
-initializeDatabase();
+module.exports = initializeDatabase;

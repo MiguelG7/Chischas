@@ -4,6 +4,10 @@ const app = express();
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const inicializarBase = require('./scripts/inicializarBase'); // Importa el script de inicialización
+
+// Inicializar la base de datos
+inicializarBase();
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
