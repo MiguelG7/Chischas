@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const User = require('../models/users');
-const Game = require('../models/partidas');
+const Partida = require('../models/partidas');
 
 async function initializeDatabase() {
     try {
@@ -22,17 +22,15 @@ async function initializeDatabase() {
             console.log('La colección "users" ya existe.');
         }
 
-        // Verificar si la colección "games" existe
-        const gameCollectionExists = await mongoose.connection.db.listCollections({ name: 'games' }).hasNext();
-        if (!gameCollectionExists) {
-            console.log('Creando colección "games"...');
-            await Game.createCollection();
+        // Verificar si la colección "partidas" existe
+        const partidaCollectionExists = await mongoose.connection.db.listCollections({ name: 'partidas' }).hasNext();
+        if (!partidaCollectionExists) {
+            console.log('Creando colección "partidas"...');
+            await Partida.createCollection();
         } else {
-            console.log('La colección "games" ya existe.');
+            console.log('La colección "partidas" ya existe.');
         }
 
-        // Cerrar la conexión
-        await mongoose.connection.close();
         console.log('Inicialización de la base de datos completada.');
     } catch (err) {
         console.error('Error al inicializar la base de datos:', err);
