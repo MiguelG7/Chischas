@@ -1,36 +1,61 @@
 <link rel="stylesheet" href="/chessboardjs/www/css/chessboard.css">
 <link rel="stylesheet" href="/css/style.css">
 
-<div id="game-container">
-    <div id="history-container">
-        <h3>Historial de movimientos</h3>
-        <div id="history"></div>
+<body data-user-name="<%= session.userName || '' %>" data-user-id="<%= session.userId || '' %>">
+    <div id="game-container">
+        <div id="history-container">
+            <h3>Historial de Movimientos</h3>
+            <div id="history" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px; font-family: monospace;"></div>
+        </div>
+        <div id="board-container">
+            <div id="board1"></div>
+        </div>
+        <div id="chat-container">
+            <h3>Chat</h3>
+            <div id="chat-messages" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px;"></div>
+            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                <input id="chat-input" type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px;">
+                <button id="send-chat" style="padding: 5px 10px;">Enviar</button>
+            </div>
+        </div>
+        <div id="game-status-container">
+            <h3>Estado de la partida</h3>
+            <div id="player-status">
+                <p id="player1-status">Jugador 1: Esperando...</p>
+                <p id="player2-status">Jugador 2: Esperando...</p>
+            </div>
+            <p id="player-count">Número de jugadores en la partida: 0</p>
+            <p id="waiting-message">Esperando a que se unan más jugadores...</p>
+        </div>
     </div>
-    <div id="board-container">
-        <div id="board1"></div>
-    </div>
-    <div id="chat-container">
-        <h3>Chat</h3>
-        <div id="chat-messages"></div>
-        <input id="chat-input" type="text" placeholder="Escribe un mensaje...">
-        <button id="send-chat">Enviar</button>
-    </div>
-</div>
 
-<div id="color-sorting-modal" class="hidden">
-    <div id="color-sorting-animation">
-        <p>Decidiendo tu color...</p>
-        <div class="spinner"></div>
+    <div id="player-info">
+        <div class="player">
+            <img id="player1-picture" src="/uploads/default-profile.jpg" alt="Tu foto" width="50" height="50">
+            <span id="player1-name">Tú</span>
+        </div>
+        <div class="vs">VS</div>
+        <div class="player">
+            <img id="player2-picture" src="/uploads/default-profile.jpg" alt="Foto del rival" width="50" height="50">
+            <span id="player2-name"></span>
+        </div>
     </div>
-</div>
 
-<div id="vs-modal" class="hidden">
-    <div id="vs-animation">
-        <h1><span id="player1-name"></span> <span class="vs">VS</span> <span id="player2-name"></span></h1>
+    <div id="color-sorting-modal" class="hidden">
+        <div id="color-sorting-animation">
+            <p>Decidiendo tu color...</p>
+            <div class="spinner"></div>
+        </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
-<script src="/chessboardjs/www/js/chessboard.js" defer></script>
-<script src="/socket.io-client/socket.io.js" defer></script> <!-- Cliente de Socket.IO -->
-<script src="/javascript/chischas/chischas.js" type="module" defer></script>
+    <div id="vs-modal" class="hidden">
+        <div id="vs-animation">
+            <h1><span id="player1-name"></span> <span class="vs">VS</span> <span id="player2-name"></span></h1>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="/chessboardjs/www/js/chessboard.js" defer></script>
+    <script src="/socket.io-client/socket.io.js" defer></script> <!-- Cliente de Socket.IO -->
+    <script src="/javascript/chischas/chischas.js" type="module" defer></script>
+</body>

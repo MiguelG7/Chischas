@@ -2,8 +2,19 @@
 
 <%- include('header') %>
 <h1>Perfil de Usuario</h1>
-<p><strong>Nombre:</strong> <%= user.name %></p>
-<p><strong>Email:</strong> <%= user.email %></p>
+<img src="<%= user.profilePicture || '/uploads/default-profile.png' %>" alt="Foto de perfil" width="150" height="150">
+<form action="/perfil" method="POST" enctype="multipart/form-data">
+    <label for="name">Nombre:</label>
+    <input type="text" name="name" value="<%= user.name %>" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" value="<%= user.email %>" required><br>
+
+    <label for="profilePicture">Foto de perfil:</label>
+    <input type="file" name="profilePicture" accept="image/*"><br>
+
+    <button type="submit">Guardar cambios</button>
+</form>
 <p><strong>Partidas Totales:</strong> <%= user.totalGames %></p>
 <p><strong>Partidas Ganadas:</strong> <%= user.wins %></p>
 <p><strong>Partidas Perdidas:</strong> <%= user.losses %></p>

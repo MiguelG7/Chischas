@@ -1700,4 +1700,4 @@ return widget;
 ChessBoard.fenToObj = fenToObj;
 ChessBoard.objToFen = objToFen;
 
-module.exports = ChessBoard;
+//module.exports = ChessBoard;

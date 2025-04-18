@@ -1,16 +1,16 @@
 <link rel="stylesheet" href="/css/style.css">
 <script src="/javascript/topnav/topnav.js" defer></script>
 
-
 <h1 id="titulo"><%= title %></h1>
-<h3 id="autor">by Miguel Gamboa Sánchez <h3>
+<h3 id="autor">by Miguel Gamboa Sánchez</h3>
 <div class="topnav">
     <a class="active" href="/">Home</a>
+    <a href="/chischas">Jugar</a>
 
-    <a href="/chischas"> Jugar</a>
-
-    <a href="/registro"> Registro</a>
-
-    <a href="/login"> Log in</a>
-
+    <% if (session.userId) { %>
+        <a href="/perfil"><%= session.userName %></a> <!-- Muestra el nombre del usuario -->
+    <% } else { %>
+        <a href="/registro">Registro</a>
+        <a href="/login">Log in</a>
+    <% } %>
 </div>

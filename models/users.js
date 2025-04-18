@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
   draws: { type: Number, default: 0 },
   registrationDate: { type: Date, default: Date.now },
   lastLogin: { type: Date },
-  recentGames: { type: [String], default: [] }
+  recentGames: { type: [String], default: [] },
+  profilePicture: { type: String, default: '/uploads/default-profile.jpg' } // Ruta de la foto predeterminada
 });
 
 // Middleware para encriptar contraseñas antes de guardar

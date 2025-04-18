@@ -5,7 +5,9 @@ const gameSchema = new mongoose.Schema({
     players: [
         {
             userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Referencia al ID del usuario
-            color: { type: String, enum: ['w', 'b'], required: true } // Color asignado al jugador
+            color: { type: String, enum: ['w', 'b'], required: true }, // Color asignado al jugador
+            name: { type: String }, // Nombre del jugador
+            profilePicture: { type: String }, // Foto del jugador
         }
     ],
     result: {
