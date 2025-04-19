@@ -269,5 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 historyElement.appendChild(moveElement);
             });
         });
+
+        // Escuchar el evento gameOver para mostrar el resultado al usuario
+        socket.on("gameOver", ({ result }) => {
+            alert(result); // Mostrar el resultado al usuario
+            location.reload(); // Recargar la página para reiniciar
+        });
     }
 });

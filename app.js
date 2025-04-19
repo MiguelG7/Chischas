@@ -6,6 +6,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./models/users'); // Importar el modelo de usuario
 const inicializarBase = require('./scripts/inicializarBase'); // Importar el script de inicialización
+const Game = require('./models/partidas'); // Importar modelo de partidas
+const { Chess } = require('./chess_engine/chess.js'); // Importar la biblioteca de ajedrez
 
 // Inicializar la base de datos
 inicializarBase();
@@ -205,7 +207,7 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("move", ({ gameId, move }) => {
+    socket.on("move", async ({ gameId, move }) => {
         const game = games[gameId];
         if (!game) return;
 
@@ -222,6 +224,81 @@ io.on("connection", (socket) => {
         game.turn = game.turn === 'w' ? 'b' : 'w';
 
         console.log("Estado actual de la partida:", game);
+
+        // Verificar si la partida ha terminado
+        const chess = new Chess(game.fen);
+        if (chess.isCheckmate()) {
+            const winner = game.turn === 'b' ? 'w' : 'b'; // El turno opuesto gana
+            const loser = game.turn;
+
+            // Actualizar estadísticas en la base de datos
+            if (game.players.length === 2) {
+                const [player1, player2] = game.players;
+
+                try {
+                    const winnerId = mongoose.Types.ObjectId.isValid(player1) ? mongoose.Types.ObjectId(player1) : null;
+                    const loserId = mongoose.Types.ObjectId.isValid(player2) ? mongoose.Types.ObjectId(player2) : null;
+
+                    if (winnerId && loserId) {
+                        await User.findByIdAndUpdate(winnerId, { $inc: { wins: 1, totalGames: 1 } });
+                        await User.findByIdAndUpdate(loserId, { $inc: { losses: 1, totalGames: 1 } });
+                    } else {
+                        console.error("IDs de jugadores no válidos:", { winnerId, loserId });
+                    }
+                } catch (err) {
+                    console.error("Error al actualizar estadísticas:", err);
+                }
+            }
+
+            // Guardar el resultado en la base de datos
+            try {
+                await Game.findByIdAndUpdate(gameId, {
+                    result: { winner: winner, draw: false },
+                    moves: game.history.map(m => m.san),
+                });
+            } catch (err) {
+                console.error("Error al guardar el resultado de la partida:", err);
+            }
+
+            io.to(gameId).emit("gameOver", { result: `¡Jaque mate! Ganador: ${winner}` });
+            delete games[gameId];
+            return;
+        }
+
+        if (chess.isDraw()) {
+            // Actualizar estadísticas en la base de datos
+            if (game.players.length === 2) {
+                const [player1, player2] = game.players;
+
+                try {
+                    const player1Id = mongoose.Types.ObjectId.isValid(player1) ? mongoose.Types.ObjectId(player1) : null;
+                    const player2Id = mongoose.Types.ObjectId.isValid(player2) ? mongoose.Types.ObjectId(player2) : null;
+
+                    if (player1Id && player2Id) {
+                        await User.findByIdAndUpdate(player1Id, { $inc: { draws: 1, totalGames: 1 } });
+                        await User.findByIdAndUpdate(player2Id, { $inc: { draws: 1, totalGames: 1 } });
+                    } else {
+                        console.error("IDs de jugadores no válidos:", { player1Id, player2Id });
+                    }
+                } catch (err) {
+                    console.error("Error al actualizar estadísticas:", err);
+                }
+            }
+
+            // Guardar el resultado en la base de datos
+            try {
+                await Game.findByIdAndUpdate(gameId, {
+                    result: { draw: true },
+                    moves: game.history.map(m => m.san),
+                });
+            } catch (err) {
+                console.error("Error al guardar el resultado de la partida:", err);
+            }
+
+            io.to(gameId).emit("gameOver", { result: "¡La partida terminó en tablas!" });
+            delete games[gameId];
+            return;
+        }
 
         // Enviar el movimiento al oponente
         socket.to(gameId).emit("opponentMove", move);
