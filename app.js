@@ -4,8 +4,8 @@ const app = express();
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('./models/users'); // Importa el modelo de usuario
-const inicializarBase = require('./scripts/inicializarBase'); // Importa el script de inicialización
+const User = require('./models/users'); // Importar el modelo de usuario
+const inicializarBase = require('./scripts/inicializarBase'); // Importar el script de inicialización
 
 // Inicializar la base de datos
 inicializarBase();
@@ -17,25 +17,25 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('Conectado a MongoDB'))
   .catch((err) => console.error('Error al conectar a MongoDB:', err));
 
-//sockets
+// Configuración de sockets
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-app.use(express.static('public'));//hace que public sea el comienzo de la ruta relativa haciendo posible rutas como /javascript/snake en snake.ejs
-app.set('view engine','ejs');
-app.set('views','./views');
+app.use(express.static('public')); // Hace que "public" sea el comienzo de la ruta relativa, permitiendo rutas como /javascript/snake en snake.ejs
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
-// Sirve archivos estáticos desde node_modules
+// Servir archivos estáticos desde node_modules
 app.use('/chessboardjs', express.static('chess_engine/chessboardjs'));
 app.use('/chessjs', express.static('chess_engine/chess.js'));
 app.use('/socket.io-client', express.static('node_modules/socket.io-client/dist'));
 
 app.locals.title = process.env.TITLE_ENV || "Chischás!";
 
-app.use(express.urlencoded({ extended: true }));//hace que se pueda usar req.body
-app.use(express.json());//hace que se pueda usar req.body
+app.use(express.urlencoded({ extended: true })); // Permite usar req.body para datos codificados en URL
+app.use(express.json()); // Permite usar req.body para datos JSON
 
 const indexRouter = require('./routes/index');
 const chischasRouter = require('./routes/chischas');
@@ -49,7 +49,7 @@ app.use(session({
     secret: 'mi-secreto',
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 1000 * 60 * 60 * 24}
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // Duración de la cookie: 1 día
 }));
 
 app.use(cookieParser());
@@ -67,6 +67,7 @@ app.use(async (req, res, next) => {
     next();
 });
 
+// Configuración de rutas
 app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
@@ -119,7 +120,7 @@ io.on("connection", (socket) => {
         let user = await User.findOne({ name: playerName }).select('name profilePicture');
         if (!user) {
             console.log(`Usuario no encontrado en la base de datos. Creando usuario temporal para ${playerName}.`);
-            user = { name: playerName, profilePicture: '/uploads/default-profile.png' };
+            user = { name: playerName, profilePicture: '/uploads/default-profile.jpg' };
         }
 
         // Añadir al jugador a la partida
@@ -182,7 +183,7 @@ io.on("connection", (socket) => {
                 user = await User.findById(userId).select('name profilePicture');
             } else if (userName) {
                 // Crear un usuario temporal para no logueados
-                user = { name: userName, profilePicture: '/uploads/default-profile.png' };
+                user = { name: userName, profilePicture: '/uploads/default-profile.jpg' };
             }
 
             if (!user) {
@@ -208,8 +209,15 @@ io.on("connection", (socket) => {
         const game = games[gameId];
         if (!game) return;
 
-        // Actualizar el historial y el estado del juego
-        game.history.push(move); // Guardar el movimiento completo
+        // Serializar el objeto de movimiento en un formato legible
+        const moveWithPiece = {
+            piece: move.piece,
+            from: move.from,
+            to: move.to,
+            san: move.san,
+        };
+
+        game.history.push(moveWithPiece); // Guardar el movimiento serializado
         game.fen = move.after; // Actualizar el estado del tablero con el FEN resultante
         game.turn = game.turn === 'w' ? 'b' : 'w';
 
@@ -221,16 +229,19 @@ io.on("connection", (socket) => {
         // Emitir el historial actualizado a ambos jugadores
         io.to(gameId).emit("gameState", {
             fen: game.fen,
-            history: game.history.map((m) => m.san), // Enviar solo SAN al cliente
+            history: game.history, // Enviar el historial serializado
             turn: game.turn,
             playerNames: game.playerNames,
         });
     });
 
-    socket.on("chatMessage", ({ gameId, message, playerName }) => {
-        if (!message || !playerName) return; // Validar entrada
-        console.log(`Mensaje recibido en partida ${gameId}: ${message} (de ${playerName})`);
-        io.to(gameId).emit("chatMessage", { playerName, message, timestamp: new Date().toLocaleTimeString() });
+    socket.on("chatMessage", ({ gameId, message, userName }) => {
+        if (!message || !userName || !gameId) {
+            console.error("Datos incompletos para el mensaje de chat:", { gameId, message, userName });
+            return;
+        }
+        console.log(`Mensaje recibido en partida ${gameId}: ${message} (de ${userName})`);
+        io.to(gameId).emit("chatMessage", { userName, message, timestamp: new Date().toLocaleTimeString() });
     });
 
     socket.on("disconnect", () => {

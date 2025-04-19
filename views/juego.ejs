@@ -1,20 +1,24 @@
 <link rel="stylesheet" href="/chessboardjs/www/css/chessboard.css">
 <link rel="stylesheet" href="/css/style.css">
 
-<body data-user-name="<%= session.userName || '' %>" data-user-id="<%= session.userId || '' %>">
+<body data-user-name="<%= escape(session.userName || '') %>" data-user-id="<%= escape(session.userId || '') %>">
     <div id="game-container">
         <div id="history-container">
             <h3>Historial de Movimientos</h3>
-            <div id="history" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px; font-family: monospace;"></div>
+            <div id="history" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px; font-family: monospace;">
+                <!-- Each move will display the piece and destination -->
+            </div>
         </div>
         <div id="board-container">
             <div id="board1"></div>
         </div>
         <div id="chat-container">
             <h3>Chat</h3>
-            <div id="chat-messages" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px;"></div>
+            <div id="chat-messages" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px;">
+                <!-- Los mensajes del chat aparecerán aquí -->
+            </div>
             <div style="display: flex; gap: 5px; margin-top: 5px;">
-                <input id="chat-input" type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px;">
+                <input id="chat-input" type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px;" maxlength="200">
                 <button id="send-chat" style="padding: 5px 10px;">Enviar</button>
             </div>
         </div>
@@ -56,6 +60,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
     <script src="/chessboardjs/www/js/chessboard.js" defer></script>
-    <script src="/socket.io-client/socket.io.js" defer></script> <!-- Cliente de Socket.IO -->
+    <script src="/socket.io-client/socket.io.js" defer></script>
     <script src="/javascript/chischas/chischas.js" type="module" defer></script>
 </body>

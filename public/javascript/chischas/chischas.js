@@ -111,15 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Actualiza los datos del jugador y del oponente
             if (playerColor === 'w') {
-                document.getElementById('player1-name').textContent = userName || playerName;
-                document.getElementById('player1-picture').src = '/uploads/white.png';
+                document.getElementById('player1-name').textContent = userName || playerNames[0];
+                document.getElementById('player1-picture').src = '/uploads/default-profile.jpg';
                 document.getElementById('player2-name').textContent = opponentName;
                 document.getElementById('player2-picture').src = opponentPicture;
             } else {
                 document.getElementById('player1-name').textContent = opponentName;
                 document.getElementById('player1-picture').src = opponentPicture;
-                document.getElementById('player2-name').textContent = userName || playerName;
-                document.getElementById('player2-picture').src = '/uploads/black.png';
+                document.getElementById('player2-name').textContent = userName || playerNames[1];
+                document.getElementById('player2-picture').src = '/uploads/default-profile.jpg';
             }
 
             // Mostrar mensaje de asignación de color
@@ -222,6 +222,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Actualizar el historial de movimientos con pieza y destino
+        socket.on("gameState", ({ history }) => {
+            const historyElement = document.getElementById('history');
+            historyElement.innerHTML = ''; // Clear the history
+            history.forEach((move, index) => {
+                const moveElement = document.createElement('p');
+                moveElement.textContent = `${index + 1}. ${move.piece} ${move.from} -> ${move.to}`;
+                historyElement.appendChild(moveElement);
+            });
+        });
+
         // Manejar el envío de mensajes de chat
         const chatInput = document.getElementById('chat-input');
         const sendChatButton = document.getElementById('send-chat');
@@ -230,14 +241,20 @@ document.addEventListener('DOMContentLoaded', () => {
         sendChatButton.addEventListener('click', () => {
             const message = chatInput.value.trim();
             if (message) {
-                socket.emit("chatMessage", { gameId, message, playerName: userName });
+                socket.emit("chatMessage", { gameId, message, userName }); // Usamos userName
                 chatInput.value = ''; // Limpiar el campo de entrada
+            } else {
+                alert("El mensaje no puede estar vacío.");
             }
         });
 
-        socket.on("chatMessage", ({ playerName, message }) => {
+        socket.on("chatMessage", ({ userName, message, timestamp }) => { // Usamos userName
+            if (!userName || !message) {
+                console.error("Datos incompletos para mostrar el mensaje de chat:", { userName, message });
+                return;
+            }
             const messageElement = document.createElement('p');
-            messageElement.innerHTML = `<strong>${playerName}:</strong> ${message}`;
+            messageElement.innerHTML = `<strong>${userName}:</strong> ${message} <span style="font-size: 0.8rem; color: #888;">(${timestamp})</span>`;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight; // Desplazar hacia abajo
         });
@@ -248,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             historyElement.innerHTML = ''; // Limpiar el historial
             history.forEach((move, index) => {
                 const moveElement = document.createElement('p');
-                moveElement.textContent = `${index + 1}. ${move}`;
+                moveElement.textContent = `${index + 1}. ${move.piece} ${move.from} -> ${move.to}`;
                 historyElement.appendChild(moveElement);
             });
         });
