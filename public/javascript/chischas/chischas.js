@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userName = body.dataset.userName;
     const userId = body.dataset.userId;
     const startGameButton = document.getElementById('startGameButton');
+    let playerName = null; // Declarar playerName en un alcance más amplio
 
     // Lógica para el botón de iniciar partida
     if (startGameButton) {
@@ -24,10 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.emit('joinGame', { gameId, playerName: userName });
             } else {
                 // Usuario no logueado, solicita el nombre
-                const playerName = prompt('Introduce tu nombre para jugar:');
-                if (playerName) {
-                    socket.emit('joinGame', { gameId, playerName });
+                while (!playerName) {
+                    playerName = prompt('Introduce tu nombre para jugar:');
+                    if (!playerName) {
+                        alert('El nombre no puede estar vacío. Por favor, introduce un nombre.');
+                    }
                 }
+                socket.emit('joinGame', { gameId, playerName });
             }
         });
     }
@@ -40,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userId) {
             socket.emit("joinGame", { gameId, userId, userName });
         } else {
-            let playerName = null;
             while (!playerName) {
                 playerName = prompt('Introduce tu nombre para jugar:');
                 if (!playerName) {
@@ -58,6 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const showMessage = (message, duration = 3000) => {
             return new Promise((resolve) => {
                 const messageModal = document.getElementById('message-modal');
+                if (!messageModal) {
+                    console.error("Modal 'message-modal' no encontrado.");
+                    return resolve(); // Resolve immediately if modal is not found
+                }
                 const messageContent = messageModal.querySelector('.message-content');
                 messageContent.textContent = message;
                 messageModal.classList.remove('hidden');
@@ -104,22 +111,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Asignar color al jugador
+        // Asignar color al jugador y actualizar el modal "VS"
         socket.on("colorAssignment", async ({ color, opponentName, opponentPicture }) => {
             console.log("Evento colorAssignment recibido:", color, opponentName);
             playerColor = color;
 
             // Actualiza los datos del jugador y del oponente
+            const currentPlayerName = userName || playerName; // Usa playerName si userName está vacío
             if (playerColor === 'w') {
-                document.getElementById('player1-name').textContent = userName || playerNames[0];
+                document.getElementById('player1-name').textContent = currentPlayerName;
                 document.getElementById('player1-picture').src = '/uploads/default-profile.jpg';
                 document.getElementById('player2-name').textContent = opponentName;
                 document.getElementById('player2-picture').src = opponentPicture;
+
+                // Actualizar el modal "VS"
+                document.getElementById('vs-player1-name').textContent = currentPlayerName;
+                document.getElementById('vs-player1-picture').src = '/uploads/default-profile.jpg';
+                document.getElementById('vs-player2-name').textContent = opponentName;
+                document.getElementById('vs-player2-picture').src = opponentPicture;
             } else {
                 document.getElementById('player1-name').textContent = opponentName;
                 document.getElementById('player1-picture').src = opponentPicture;
-                document.getElementById('player2-name').textContent = userName || playerNames[1];
+                document.getElementById('player2-name').textContent = currentPlayerName;
                 document.getElementById('player2-picture').src = '/uploads/default-profile.jpg';
+
+                // Actualizar el modal "VS"
+                document.getElementById('vs-player1-name').textContent = opponentName;
+                document.getElementById('vs-player1-picture').src = opponentPicture;
+                document.getElementById('vs-player2-name').textContent = currentPlayerName;
+                document.getElementById('vs-player2-picture').src = '/uploads/default-profile.jpg';
             }
 
             // Mostrar mensaje de asignación de color
@@ -241,22 +261,22 @@ document.addEventListener('DOMContentLoaded', () => {
         sendChatButton.addEventListener('click', () => {
             const message = chatInput.value.trim();
             if (message) {
-                socket.emit("chatMessage", { gameId, message, userName }); // Usamos userName
-                chatInput.value = ''; // Limpiar el campo de entrada
+                const senderName = userName || playerName; // Use playerName if userName is empty
+                socket.emit("chatMessage", { gameId, message, userName: senderName }); // Send message
+                chatInput.value = ''; // Clear input field
             } else {
                 alert("El mensaje no puede estar vacío.");
             }
         });
 
-        socket.on("chatMessage", ({ userName, message, timestamp }) => { // Usamos userName
-            if (!userName || !message) {
-                console.error("Datos incompletos para mostrar el mensaje de chat:", { userName, message });
-                return;
+        // Escuchar mensajes de chat del servidor
+        socket.on("chatMessage", ({ gameId: receivedGameId, userName, message, timestamp }) => {
+            if (receivedGameId === gameId) { // Filtrar mensajes por gameId
+                const messageElement = document.createElement('p');
+                messageElement.innerHTML = `<strong>${userName}:</strong> ${message} <span style="font-size: 0.8rem; color: #888;">(${timestamp})</span>`;
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Desplazar hacia abajo
             }
-            const messageElement = document.createElement('p');
-            messageElement.innerHTML = `<strong>${userName}:</strong> ${message} <span style="font-size: 0.8rem; color: #888;">(${timestamp})</span>`;
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Desplazar hacia abajo
         });
 
         // Actualizar el historial de movimientos

@@ -318,7 +318,7 @@ io.on("connection", (socket) => {
             return;
         }
         console.log(`Mensaje recibido en partida ${gameId}: ${message} (de ${userName})`);
-        io.to(gameId).emit("chatMessage", { userName, message, timestamp: new Date().toLocaleTimeString() });
+        io.to(gameId).emit("chatMessage", { gameId, userName, message, timestamp: new Date().toLocaleTimeString() });
     });
 
     socket.on("disconnect", () => {
