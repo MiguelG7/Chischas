@@ -93,103 +93,46 @@ const updateGameStatus = (gameId) => {
 io.on("connection", (socket) => {
     console.log("Un jugador se ha conectado.");
 
-    socket.on("joinGame", async ({ gameId, playerName }) => {
-        console.log(`Jugador ${playerName} intentando unirse a la partida ${gameId}`);
-        if (!playerName) {
-            socket.emit("errorMessage", "El nombre del jugador es obligatorio.");
-            return;
-        }
-
-        if (!games[gameId]) {
-            games[gameId] = { 
-                players: [], 
-                turn: 'w', 
-                playerNames: {}, 
-                playerPictures: {}, 
-                history: [],
-                fen: null,
-            };
-        }
-
-        const game = games[gameId];
-
-        if (game.players.length >= 2) {
-            socket.emit("errorMessage", "La partida ya está llena.");
-            return;
-        }
-
-        // Crear un usuario temporal si no se encuentra en la base de datos
-        let user = await User.findOne({ name: playerName }).select('name profilePicture');
-        if (!user) {
-            console.log(`Usuario no encontrado en la base de datos. Creando usuario temporal para ${playerName}.`);
-            user = { name: playerName, profilePicture: '/uploads/default-profile.jpg' };
-        }
-
-        // Añadir al jugador a la partida
-        game.players.push(socket.id);
-        game.playerNames[socket.id] = user.name;
-        game.playerPictures[socket.id] = user.profilePicture;
-        socket.join(gameId);
-
-        // Mostrar los nombres de los jugadores
-        const playerNames = Object.values(game.playerNames);
-        console.log(`Jugador 1: ${playerNames[0] || 'Esperando...'}`);
-        console.log(`Jugador 2: ${playerNames[1] || 'Esperando...'}`);
-
-        console.log("Número de jugadores en la partida:", game.players.length);
-        if (game.players.length === 2) {
-            console.log("LOS DOS JUGADORES SE HAN UNIDO");
-            const [player1, player2] = game.players;
-            const colors = Math.random() < 0.5 ? ['w', 'b'] : ['b', 'w'];
-
-            // Asignar colores a los jugadores
-            io.to(player1).emit("colorAssignment", {
-                color: colors[0],
-                opponentName: game.playerNames[player2],
-                opponentPicture: game.playerPictures[player2],
-            });
-            io.to(player2).emit("colorAssignment", {
-                color: colors[1],
-                opponentName: game.playerNames[player1],
-                opponentPicture: game.playerPictures[player1],
-            });
-
-            console.log("Asignando colores:", colors);
-            console.log("Iniciando cuenta atrás para el juego:", gameId);
-
-            // Emitir el evento de inicio de cuenta atrás
-            setTimeout(() => {
-                io.to(gameId).emit("startCountdown");
-            }, 1000);
-        } else {
-            socket.emit("waitingForOpponent", "Esperando a que se una el rival...");
-        }
-
-        // Emitir el estado actualizado del juego
-        updateGameStatus(gameId);
-
-        // Emitir el historial de movimientos al jugador que se une
-        socket.emit("gameState", {
-            fen: game.fen,
-            history: game.history,
-            turn: game.turn,
-            playerNames: game.playerNames,
-        });
-    });
-
-    socket.on("joinGame", async ({ userId, userName }) => {
+    socket.on("joinGame", async ({ gameId, playerName, userId }) => {
         try {
+            console.log(`Jugador ${playerName || userId} intentando unirse a la partida ${gameId}`);
+            if (!playerName && !userId) {
+                socket.emit("errorMessage", "El nombre del jugador o el ID de usuario es obligatorio.");
+                return;
+            }
+
+            if (!games[gameId]) {
+                games[gameId] = { 
+                    players: [], 
+                    turn: 'w', 
+                    playerNames: {}, 
+                    playerPictures: {}, 
+                    history: [],
+                    fen: null,
+                };
+            }
+
+            const game = games[gameId];
+
+            if (game.players.length >= 2) {
+                socket.emit("errorMessage", "La partida ya está llena.");
+                return;
+            }
+
+            // Buscar o crear un usuario
             let user;
             if (userId) {
-                // Buscar al usuario logueado
                 user = await User.findById(userId).select('name profilePicture');
-            } else if (userName) {
-                // Crear un usuario temporal para no logueados
-                user = { name: userName, profilePicture: '/uploads/default-profile.jpg' };
+            } else if (playerName) {
+                user = await User.findOne({ name: playerName }).select('name profilePicture');
+                if (!user) {
+                    console.log(`Usuario no encontrado en la base de datos. Creando usuario temporal para ${playerName}.`);
+                    user = { name: playerName, profilePicture: '/uploads/default-profile.jpg' };
+                }
             }
 
             if (!user) {
-                socket.emit('errorMessage', 'No se pudo encontrar o crear el usuario.');
+                socket.emit("errorMessage", "No se pudo encontrar o crear el usuario.");
                 return;
             }
 
@@ -199,9 +142,50 @@ io.on("connection", (socket) => {
             game.playerPictures[socket.id] = user.profilePicture;
             socket.join(gameId);
 
-            // Lógica para unir al usuario a la partida
-            console.log(`${user.name} se unió a la partida.`);
-            // Emitir datos al cliente
+            // Mostrar los nombres de los jugadores
+            const playerNames = Object.values(game.playerNames);
+            console.log(`Jugador 1: ${playerNames[0] || 'Esperando...'}`);
+            console.log(`Jugador 2: ${playerNames[1] || 'Esperando...'}`);
+
+            console.log("Número de jugadores en la partida:", game.players.length);
+            if (game.players.length === 2) {
+                console.log("LOS DOS JUGADORES SE HAN UNIDO");
+                const [player1, player2] = game.players;
+                const colors = Math.random() < 0.5 ? ['w', 'b'] : ['b', 'w'];
+
+                // Asignar colores a los jugadores
+                io.to(player1).emit("colorAssignment", {
+                    color: colors[0],
+                    opponentName: game.playerNames[player2],
+                    opponentPicture: game.playerPictures[player2],
+                });
+                io.to(player2).emit("colorAssignment", {
+                    color: colors[1],
+                    opponentName: game.playerNames[player1],
+                    opponentPicture: game.playerPictures[player1],
+                });
+
+                console.log("Asignando colores:", colors);
+                console.log("Iniciando cuenta atrás para el juego:", gameId);
+
+                // Emitir el evento de inicio de cuenta atrás
+                setTimeout(() => {
+                    io.to(gameId).emit("startCountdown");
+                }, 1000);
+            } else {
+                socket.emit("waitingForOpponent", "Esperando a que se una el rival...");
+            }
+
+            // Emitir el estado actualizado del juego
+            updateGameStatus(gameId);
+
+            // Emitir el historial de movimientos al jugador que se une
+            socket.emit("gameState", {
+                fen: game.fen,
+                history: game.history,
+                turn: game.turn,
+                playerNames: game.playerNames,
+            });
         } catch (err) {
             console.error('Error al unir al usuario a la partida:', err);
         }
@@ -252,8 +236,15 @@ io.on("connection", (socket) => {
 
             // Guardar el resultado en la base de datos
             try {
-                await Game.findByIdAndUpdate(gameId, {
-                    result: { winner: winner, draw: false },
+                await Game.create({
+                    id: gameId,
+                    players: Object.entries(game.playerNames).map(([socketId, name]) => ({
+                        userId: socketId,
+                        name,
+                        color: game.players[0] === socketId ? 'w' : 'b',
+                        profilePicture: game.playerPictures[socketId],
+                    })),
+                    result: { winner, draw: false },
                     moves: game.history.map(m => m.san),
                 });
             } catch (err) {
@@ -287,7 +278,14 @@ io.on("connection", (socket) => {
 
             // Guardar el resultado en la base de datos
             try {
-                await Game.findByIdAndUpdate(gameId, {
+                await Game.create({
+                    id: gameId,
+                    players: Object.entries(game.playerNames).map(([socketId, name]) => ({
+                        userId: socketId,
+                        name,
+                        color: game.players[0] === socketId ? 'w' : 'b',
+                        profilePicture: game.playerPictures[socketId],
+                    })),
                     result: { draw: true },
                     moves: game.history.map(m => m.san),
                 });
