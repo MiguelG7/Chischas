@@ -144,6 +144,12 @@ io.on("connection", (socket) => {
             game.playerIds[socket.id] = user._id ? user._id.toString() : null; // Permitir IDs nulos para invitados
             socket.join(gameId);
 
+            // Emitir aviso si hay un invitado no registrado
+            const hasGuest = Object.values(game.playerIds).some(id => id === null);
+            if (hasGuest) {
+                io.to(gameId).emit("guestWarning", "⚠️ Las partidas con usuario no registrado no contarán en las estadísticas de los usuarios.");
+            }
+
             // Mostrar los nombres de los jugadores
             const playerNames = Object.values(game.playerNames);
             console.log(`Jugador 1: ${playerNames[0] || 'Esperando...'}`);
