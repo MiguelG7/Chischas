@@ -116,6 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Evento colorAssignment recibido:", color, opponentName);
             playerColor = color;
 
+            // Mostrar aviso si hay un invitado no registrado
+            const isGuest = !userId; // Determinar si el jugador actual es un invitado
+            if (isGuest) {
+                const guestWarning = document.createElement('div');
+                guestWarning.id = 'guest-warning';
+                guestWarning.style.color = 'red';
+                guestWarning.style.marginTop = '10px';
+                guestWarning.style.textAlign = 'center';
+                guestWarning.textContent = "⚠️ Las partidas con usuario no registrado no contarán en las estadísticas de los usuarios.";
+                document.body.appendChild(guestWarning);
+            }
+
             // Actualiza los datos del jugador y del oponente
             const currentPlayerName = userName || playerName; // Usa playerName si userName está vacío
             if (playerColor === 'w') {

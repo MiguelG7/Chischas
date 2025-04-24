@@ -132,16 +132,16 @@ io.on("connection", (socket) => {
                 }
             }
 
-            if (!user || !user._id) {
-                socket.emit("errorMessage", "No se pudo encontrar o crear el usuario.");
-                return;
+            // Permitir usuarios no registrados
+            if (!user) {
+                user = { _id: null, name: playerName || "Invitado", profilePicture: '/uploads/default-profile.jpg' };
             }
 
             // Añadir al jugador a la partida
             game.players.push(socket.id);
             game.playerNames[socket.id] = user.name;
             game.playerPictures[socket.id] = user.profilePicture;
-            game.playerIds[socket.id] = user._id.toString(); // Asegurarse de que el userId se almacene como cadena
+            game.playerIds[socket.id] = user._id ? user._id.toString() : null; // Permitir IDs nulos para invitados
             socket.join(gameId);
 
             // Mostrar los nombres de los jugadores
