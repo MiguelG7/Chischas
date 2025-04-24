@@ -4,10 +4,10 @@ const app = express();
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('./models/users'); // Importar el modelo de usuario
-const inicializarBase = require('./scripts/inicializarBase'); // Importar el script de inicialización
-const Game = require('./models/partidas'); // Importar modelo de partidas
-const { Chess } = require('./chess_engine/chess.js'); // Importar la biblioteca de ajedrez
+const User = require('./models/users'); // Modelo de usuario
+const inicializarBase = require('./scripts/inicializarBase'); // Script de inicialización
+const Game = require('./models/partidas'); // Modelo de partidas
+const { Chess } = require('./chess_engine/chess.js'); // Biblioteca de ajedrez
 
 // Inicializar la base de datos
 inicializarBase();
@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-app.use(express.static('public')); // Hace que "public" sea el comienzo de la ruta relativa, permitiendo rutas como /javascript/snake en snake.ejs
+app.use(express.static('public')); // Define "public" como el inicio de la ruta relativa, permitiendo rutas como /javascript/snake en snake.ejs
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
@@ -57,7 +57,7 @@ app.use(session({
 app.use(cookieParser());
 
 app.use(async (req, res, next) => {
-    res.locals.session = req.session; // Hacer que la sesión esté disponible en las vistas
+    res.locals.session = req.session; // Hace que la sesión esté disponible en las vistas
     res.locals.cookiesAccepted = req.cookiesAccepted || false;
 
     if (req.session.userId) {
@@ -107,6 +107,7 @@ io.on("connection", (socket) => {
                     turn: 'w', 
                     playerNames: {}, 
                     playerPictures: {}, 
+                    playerIds: {}, // Almacena los userIds de la base de datos
                     history: [],
                     fen: null,
                 };
@@ -127,11 +128,11 @@ io.on("connection", (socket) => {
                 user = await User.findOne({ name: playerName }).select('name profilePicture');
                 if (!user) {
                     console.log(`Usuario no encontrado en la base de datos. Creando usuario temporal para ${playerName}.`);
-                    user = { name: playerName, profilePicture: '/uploads/default-profile.jpg' };
+                    user = { _id: null, name: playerName, profilePicture: '/uploads/default-profile.jpg' };
                 }
             }
 
-            if (!user) {
+            if (!user || !user._id) {
                 socket.emit("errorMessage", "No se pudo encontrar o crear el usuario.");
                 return;
             }
@@ -140,6 +141,7 @@ io.on("connection", (socket) => {
             game.players.push(socket.id);
             game.playerNames[socket.id] = user.name;
             game.playerPictures[socket.id] = user.profilePicture;
+            game.playerIds[socket.id] = user._id.toString(); // Asegurarse de que el userId se almacene como cadena
             socket.join(gameId);
 
             // Mostrar los nombres de los jugadores
@@ -213,21 +215,24 @@ io.on("connection", (socket) => {
         const chess = new Chess(game.fen);
         if (chess.isCheckmate()) {
             const winner = game.turn === 'b' ? 'w' : 'b'; // El turno opuesto gana
-            const loser = game.turn;
 
             // Actualizar estadísticas en la base de datos
             if (game.players.length === 2) {
                 const [player1, player2] = game.players;
 
                 try {
-                    const winnerId = mongoose.Types.ObjectId.isValid(player1) ? mongoose.Types.ObjectId(player1) : null;
-                    const loserId = mongoose.Types.ObjectId.isValid(player2) ? mongoose.Types.ObjectId(player2) : null;
+                    const player1Id = mongoose.Types.ObjectId.isValid(game.playerIds[player1]) 
+                        ? mongoose.Types.ObjectId(game.playerIds[player1]) 
+                        : null;
+                    const player2Id = mongoose.Types.ObjectId.isValid(game.playerIds[player2]) 
+                        ? mongoose.Types.ObjectId(game.playerIds[player2]) 
+                        : null;
 
-                    if (winnerId && loserId) {
-                        await User.findByIdAndUpdate(winnerId, { $inc: { wins: 1, totalGames: 1 } });
-                        await User.findByIdAndUpdate(loserId, { $inc: { losses: 1, totalGames: 1 } });
+                    if (player1Id && player2Id) {
+                        await User.findByIdAndUpdate(player1Id, { $inc: { wins: 1, totalGames: 1 } });
+                        await User.findByIdAndUpdate(player2Id, { $inc: { losses: 1, totalGames: 1 } });
                     } else {
-                        console.error("IDs de jugadores no válidos:", { winnerId, loserId });
+                        console.error("IDs de jugadores no válidos:", { player1Id, player2Id });
                     }
                 } catch (err) {
                     console.error("Error al actualizar estadísticas:", err);
@@ -239,12 +244,15 @@ io.on("connection", (socket) => {
                 await Game.create({
                     id: gameId,
                     players: Object.entries(game.playerNames).map(([socketId, name]) => ({
-                        userId: socketId,
+                        userId: game.playerIds[socketId], // Use the correct userId from playerIds
                         name,
                         color: game.players[0] === socketId ? 'w' : 'b',
                         profilePicture: game.playerPictures[socketId],
                     })),
-                    result: { winner, draw: false },
+                    result: { 
+                        winner: game.playerIds[game.players[winner === 'w' ? 0 : 1]], // Use the correct userId for the winner
+                        draw: false 
+                    },
                     moves: game.history.map(m => m.san),
                 });
             } catch (err) {
@@ -262,8 +270,12 @@ io.on("connection", (socket) => {
                 const [player1, player2] = game.players;
 
                 try {
-                    const player1Id = mongoose.Types.ObjectId.isValid(player1) ? mongoose.Types.ObjectId(player1) : null;
-                    const player2Id = mongoose.Types.ObjectId.isValid(player2) ? mongoose.Types.ObjectId(player2) : null;
+                    const player1Id = mongoose.Types.ObjectId.isValid(game.playerIds[game.players[0]]) 
+                        ? mongoose.Types.ObjectId(game.playerIds[game.players[0]]) 
+                        : null;
+                    const player2Id = mongoose.Types.ObjectId.isValid(game.playerIds[game.players[1]]) 
+                        ? mongoose.Types.ObjectId(game.playerIds[game.players[1]]) 
+                        : null;
 
                     if (player1Id && player2Id) {
                         await User.findByIdAndUpdate(player1Id, { $inc: { draws: 1, totalGames: 1 } });
@@ -281,7 +293,7 @@ io.on("connection", (socket) => {
                 await Game.create({
                     id: gameId,
                     players: Object.entries(game.playerNames).map(([socketId, name]) => ({
-                        userId: socketId,
+                        userId: game.playerIds[socketId], // Use the correct userId from playerIds
                         name,
                         color: game.players[0] === socketId ? 'w' : 'b',
                         profilePicture: game.playerPictures[socketId],
