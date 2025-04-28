@@ -21,4 +21,32 @@
 <p><strong>Partidas Empatadas:</strong> <%= user.draws %></p>
 <p><strong>Fecha de Registro:</strong> <%= user.registrationDate.toLocaleDateString() %></p>
 
+<h2>Partidas Jugadas</h2>
+<table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Rival</th>
+            <th>Resultado</th>
+            <th>Color</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (games.length > 0) { %>
+            <% games.forEach(game => { %>
+                <tr>
+                    <td><%= new Date(game.date).toLocaleDateString() %></td>
+                    <td><%= game.opponentName %></td>
+                    <td><%= game.result %></td>
+                    <td><%= game.color === 'w' ? 'Blancas' : 'Negras' %></td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="5">No has jugado ninguna partida aún.</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
 <a href="/logout">Cerrar Sesión</a>

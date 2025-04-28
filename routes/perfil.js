@@ -4,6 +4,9 @@ const path = require('path');
 const router = express.Router();
 const User = require('../models/users');
 
+// Ruta para mostrar el perfil del usuario
+const Game = require('../models/partidas');
+
 // Configuración de multer para subir imágenes
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -23,15 +26,35 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-// Ruta para mostrar el perfil del usuario
-router.get('/', isAuthenticated, async (req, res) => {
-    try {
-        const user = await User.findById(req.session.userId);
-        if (!user) {
-            return res.status(404).send('Usuario no encontrado.');
-        }
+router.get('/', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
 
-        res.render('perfil', { user }); // Renderiza la vista del perfil con los datos del usuario
+    try {
+        const user = await User.findById(req.session.userId).lean();
+        const games = await Game.find({
+            'players.userId': req.session.userId
+        }).lean();
+
+        const formattedGames = games.map(game => {
+            const player = game.players.find(p => p.userId.toString() === req.session.userId);
+            const opponent = game.players.find(p => p.userId.toString() !== req.session.userId);
+
+            return {
+                id: game.id,
+                date: game.createdAt,
+                opponentName: opponent ? opponent.name : 'Desconocido',
+                result: game.result.draw
+                    ? 'Empate'
+                    : game.result.winner === req.session.userId
+                    ? 'Victoria'
+                    : 'Derrota',
+                color: player.color
+            };
+        });
+
+        res.render('perfil', { user, games: formattedGames });
     } catch (err) {
         console.error('Error al cargar el perfil:', err);
         res.status(500).send('Error al cargar el perfil.');
