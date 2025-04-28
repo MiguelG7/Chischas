@@ -51,7 +51,11 @@ app.use(session({
     secret: 'mi-secreto',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // Duración de la cookie: 1 día
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        httpOnly: true, // Prevent client-side access to the cookie
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    }
 }));
 
 app.use(cookieParser());
