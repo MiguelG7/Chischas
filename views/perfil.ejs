@@ -20,6 +20,5 @@
 <p><strong>Partidas Perdidas:</strong> <%= user.losses %></p>
 <p><strong>Partidas Empatadas:</strong> <%= user.draws %></p>
 <p><strong>Fecha de Registro:</strong> <%= user.registrationDate.toLocaleDateString() %></p>
-<p><strong>Último Inicio de Sesión:</strong> <%= user.lastLogin ? user.lastLogin.toLocaleDateString() : 'Nunca' %></p>
 
 <a href="/logout">Cerrar Sesión</a>
