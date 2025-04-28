@@ -41,15 +41,20 @@ router.get('/', async (req, res) => {
             const player = game.players.find(p => p.userId.toString() === req.session.userId);
             const opponent = game.players.find(p => p.userId.toString() !== req.session.userId);
 
+            let result;
+            if (game.result.draw) {
+                result = 'Empate';
+            } else if (game.result.winner && game.result.winner.toString() === req.session.userId) {
+                result = 'Victoria';
+            } else {
+                result = 'Derrota';
+            }
+
             return {
                 id: game.id,
                 date: game.createdAt,
                 opponentName: opponent ? opponent.name : 'Desconocido',
-                result: game.result.draw
-                    ? 'Empate'
-                    : game.result.winner === req.session.userId
-                    ? 'Victoria'
-                    : 'Derrota',
+                result,
                 color: player.color
             };
         });
