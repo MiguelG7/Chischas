@@ -13,7 +13,10 @@
 ![Forks](https://img.shields.io/github/forks/MiguelG7/TFG?color=FFD311&style=for-the-badge)
 ![Estrellas](https://img.shields.io/github/stars/MiguelG7/TFG?color=FFD311&style=for-the-badge)
 
+
 <p><img src="https://s6.gifyu.com/images/bp2XI.gif" alt="Demo" width="650"/></p>
+Imagen desactualizada
+
 
 ## 🛠️ Tecnologías usadas
 
