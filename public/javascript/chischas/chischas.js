@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const player2Status = document.getElementById('player2-status');
             const playerCountElement = document.getElementById('player-count');
 
-            player1Status.textContent = `Jugador 1: ${playerNames[0] || 'Esperando...'}`;
-            player2Status.textContent = `Jugador 2: ${playerNames[1] || 'Esperando...'}`;
+            player1Status.textContent = `Blancas: ${playerNames[0] || 'Esperando...'}`;
+            player2Status.textContent = `Negras: ${playerNames[1] || 'Esperando...'}`;
             playerCountElement.textContent = `Número de jugadores en la partida: ${playerCount}`;
         };
 
@@ -301,4 +301,29 @@ document.addEventListener('DOMContentLoaded', () => {
             location.reload(); // Recargar la página para reiniciar
         });
     }
+
+    // Actualizar temporizadores en la interfaz
+    socket.on("updateTimer", ({ timers, turn }) => {
+        const player1Timer = document.getElementById('player1-timer');
+        const player2Timer = document.getElementById('player2-timer');
+
+        // Convertir segundos a formato MM:SS
+        const formatTime = (seconds) => {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        };
+
+        player1Timer.textContent = `Tiempo restante: ${formatTime(timers.w)}`;
+        player2Timer.textContent = `Tiempo restante: ${formatTime(timers.b)}`;
+
+        // Resaltar al jugador cuyo turno es
+        if (turn === 'w') {
+            player1Timer.style.fontWeight = 'bold';
+            player2Timer.style.fontWeight = 'normal';
+        } else {
+            player1Timer.style.fontWeight = 'normal';
+            player2Timer.style.fontWeight = 'bold';
+        }
+    });
 });

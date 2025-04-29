@@ -12,6 +12,17 @@
         <div id="board-container">
             <div id="board1"></div>
         </div>
+        <div id="game-status-container">
+            <h3>Estado de la partida</h3>
+            <div id="player-status">
+                <p id="player1-status">Jugador 1: Esperando...</p>
+                <p id="player1-timer">Tiempo restante: 5:00</p> <!-- Timer for Player 1 -->
+                <p>VS</p>
+                <p id="player2-status">Jugador 2: Esperando...</p>
+                <p id="player2-timer">Tiempo restante: 5:00</p> <!-- Timer for Player 2 -->
+            </div>
+            <p id="player-count">Número de jugadores en la partida: 0</p>
+        </div>
         <div id="chat-container">
             <h3>Chat</h3>
             <div id="chat-messages" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px;">
@@ -21,17 +32,6 @@
                 <input id="chat-input" type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px;" maxlength="200">
                 <button id="send-chat" style="padding: 5px 10px;">Enviar</button>
             </div>
-        </div>
-        <div id="game-status-container">
-            <h3>Estado de la partida</h3>
-            <div id="player-status">
-                <p id="player1-status">Jugador 1: Esperando...</p>
-                <p id="player1-timer">Tiempo restante: 5:00</p>
-                <p>VS</p>
-                <p id="player2-status">Jugador 2: Esperando...</p>
-                <p id="player2-timer">Tiempo restante: 5:00</p>
-            </div>
-            <p id="player-count">Número de jugadores en la partida: 0</p>
         </div>
     </div>
 

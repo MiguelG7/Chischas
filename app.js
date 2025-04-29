@@ -104,7 +104,7 @@ const startGameTimer = (gameId) => {
         const currentTurn = game.turn;
         if (game.timers[currentTurn] > 0) {
             game.timers[currentTurn] -= 1;
-            io.to(gameId).emit("updateTimer", { color: currentTurn, time: game.timers[currentTurn] });
+            io.to(gameId).emit("updateTimer", { timers: game.timers, turn: currentTurn }); // Emitir temporizadores y turno actual
         } else {
             clearInterval(game.timerInterval);
             io.to(gameId).emit("gameOver", { result: `¡Tiempo agotado! Ganador: ${currentTurn === 'w' ? 'negras' : 'blancas'}` });
@@ -239,7 +239,7 @@ io.on("connection", (socket) => {
         game.history.push(moveWithPiece); // Guardar el movimiento serializado
         game.fen = move.after; // Actualizar el estado del tablero con el FEN resultante
         game.turn = game.turn === 'w' ? 'b' : 'w'; // Cambiar turno
-        io.to(gameId).emit("updateTimer", { color: game.turn, time: game.timers[game.turn] }); // Actualizar temporizador
+        io.to(gameId).emit("updateTimer", { timers: game.timers }); // Emit updated timers
 
         console.log("Estado actual de la partida:", game);
 
