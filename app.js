@@ -94,6 +94,25 @@ const updateGameStatus = (gameId) => {
     io.to(gameId).emit("updateGameStatus", { playerNames, playerCount });
 };
 
+// Agregar temporizador para cada partida
+const startGameTimer = (gameId) => {
+    const game = games[gameId];
+    if (!game) return;
+
+    game.timers = { w: 300, b: 300 }; // 5 minutos por jugador
+    game.timerInterval = setInterval(() => {
+        const currentTurn = game.turn;
+        if (game.timers[currentTurn] > 0) {
+            game.timers[currentTurn] -= 1;
+            io.to(gameId).emit("updateTimer", { color: currentTurn, time: game.timers[currentTurn] });
+        } else {
+            clearInterval(game.timerInterval);
+            io.to(gameId).emit("gameOver", { result: `¡Tiempo agotado! Ganador: ${currentTurn === 'w' ? 'negras' : 'blancas'}` });
+            delete games[gameId];
+        }
+    }, 1000);
+};
+
 io.on("connection", (socket) => {
     console.log("Un jugador se ha conectado.");
 
@@ -184,6 +203,8 @@ io.on("connection", (socket) => {
                 setTimeout(() => {
                     io.to(gameId).emit("startCountdown");
                 }, 1000);
+
+                startGameTimer(gameId); // Iniciar el temporizador cuando ambos jugadores se unan
             } else {
                 socket.emit("waitingForOpponent", "Esperando a que se una el rival...");
             }
@@ -217,7 +238,8 @@ io.on("connection", (socket) => {
 
         game.history.push(moveWithPiece); // Guardar el movimiento serializado
         game.fen = move.after; // Actualizar el estado del tablero con el FEN resultante
-        game.turn = game.turn === 'w' ? 'b' : 'w';
+        game.turn = game.turn === 'w' ? 'b' : 'w'; // Cambiar turno
+        io.to(gameId).emit("updateTimer", { color: game.turn, time: game.timers[game.turn] }); // Actualizar temporizador
 
         console.log("Estado actual de la partida:", game);
 

@@ -215,7 +215,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Escuchar movimientos del oponente
         socket.on("opponentMove", (move) => {
-            chess.move(move); // Actualiza la lógica del juego
+            console.log("Movimiento del oponente recibido:", move);
+            chess.move({
+                from: move.from,
+                to: move.to,
+                promotion: 'q', // Assume promotion to queen if applicable
+            }); // Actualiza la lógica del juego
             board.position(chess.fen()); // Actualiza el tablero
         });
 
