@@ -118,28 +118,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Actualiza los datos del jugador y del oponente
             const currentPlayerName = userName || playerName; // Usa playerName si userName está vacío
-            if (playerColor === 'w') {
-                document.getElementById('player1-name').textContent = currentPlayerName;
-                document.getElementById('player1-picture').src = '/uploads/default-profile.jpg';
-                document.getElementById('player2-name').textContent = opponentName;
-                document.getElementById('player2-picture').src = opponentPicture;
+            const isWhite = playerColor === 'w';
 
-                // Actualizar el modal "VS"
-                document.getElementById('vs-player1-name').textContent = currentPlayerName;
-                document.getElementById('vs-player1-picture').src = '/uploads/default-profile.jpg';
-                document.getElementById('vs-player2-name').textContent = opponentName;
-                document.getElementById('vs-player2-picture').src = opponentPicture;
+            const player1NameElement = document.getElementById('player1-name');
+            const player1PictureElement = document.getElementById('player1-picture');
+            const player2NameElement = document.getElementById('player2-name');
+            const player2PictureElement = document.getElementById('player2-picture');
+
+            const vsPlayer1NameElement = document.getElementById('vs-player1-name');
+            const vsPlayer1PictureElement = document.getElementById('vs-player1-picture');
+            const vsPlayer2NameElement = document.getElementById('vs-player2-name');
+            const vsPlayer2PictureElement = document.getElementById('vs-player2-picture');
+
+            const defaultPicture = '/uploads/default-profile.jpg';
+            const currentPlayerPicture = body.dataset.userPicture || defaultPicture; // Cargar la foto del jugador actual
+
+            // Asignar nombres y fotos según el color del jugador
+            const assignPlayerData = (nameElement, pictureElement, name, picture, color) => {
+                nameElement.textContent = `${name} (${color})`;
+                pictureElement.src = picture || defaultPicture;
+            };
+
+            if (isWhite) {
+                assignPlayerData(player1NameElement, player1PictureElement, currentPlayerName, currentPlayerPicture, 'Blancas');
+                assignPlayerData(player2NameElement, player2PictureElement, opponentName, opponentPicture, 'Negras');
+
+                assignPlayerData(vsPlayer1NameElement, vsPlayer1PictureElement, currentPlayerName, currentPlayerPicture, 'Blancas');
+                assignPlayerData(vsPlayer2NameElement, vsPlayer2PictureElement, opponentName, opponentPicture, 'Negras');
             } else {
-                document.getElementById('player1-name').textContent = opponentName;
-                document.getElementById('player1-picture').src = opponentPicture;
-                document.getElementById('player2-name').textContent = currentPlayerName;
-                document.getElementById('player2-picture').src = '/uploads/default-profile.jpg';
+                assignPlayerData(player1NameElement, player1PictureElement, opponentName, opponentPicture, 'Blancas');
+                assignPlayerData(player2NameElement, player2PictureElement, currentPlayerName, currentPlayerPicture, 'Negras');
 
-                // Actualizar el modal "VS"
-                document.getElementById('vs-player1-name').textContent = opponentName;
-                document.getElementById('vs-player1-picture').src = opponentPicture;
-                document.getElementById('vs-player2-name').textContent = currentPlayerName;
-                document.getElementById('vs-player2-picture').src = '/uploads/default-profile.jpg';
+                assignPlayerData(vsPlayer1NameElement, vsPlayer1PictureElement, opponentName, opponentPicture, 'Blancas');
+                assignPlayerData(vsPlayer2NameElement, vsPlayer2PictureElement, currentPlayerName, currentPlayerPicture, 'Negras');
             }
 
             // Mostrar mensaje de asignación de color

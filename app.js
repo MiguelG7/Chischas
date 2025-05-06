@@ -97,7 +97,8 @@ const updateGameStatus = (gameId) => {
 // Agregar temporizador para cada partida
 const startGameTimer = (gameId) => {
     const game = games[gameId];
-    if (!game) return;
+
+    game.turn = 'w'; // Por defecto, el turno inicial es de las blancas
 
     game.timers = { w: 300, b: 300 }; // 5 minutos por jugador
     game.timerInterval = setInterval(() => {
