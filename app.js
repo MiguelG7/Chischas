@@ -98,9 +98,9 @@ const updateGameStatus = (gameId) => {
 const startGameTimer = (gameId) => {
     const game = games[gameId];
 
-    game.turn = 'w'; // Por defecto, el turno inicial es de las blancas
-
     game.timers = { w: 300, b: 300 }; // 5 minutos por jugador
+    game.turn = 'w'; // Asegurar que el turno inicial sea de las blancas
+    clearInterval(game.timerInterval); // Asegurar que no haya temporizadores previos
     game.timerInterval = setInterval(() => {
         const currentTurn = game.turn;
         if (game.timers[currentTurn] > 0) {
