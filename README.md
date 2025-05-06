@@ -49,7 +49,7 @@ Agradecimientos a los desarrolladores originales:
     ```
 2. Instala las dependencias (las dependencias del motor de juego viene por defecto en /chess_engine)
     ```bash
-    npm update  
+    npm install  
     ```
 4. Crea un archivo `.env` en la raíz del proyecto basado en el archivo `.env.example`. Por ejemplo:
 
