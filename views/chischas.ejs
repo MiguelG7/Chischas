@@ -1,8 +1,7 @@
 <% if (!gameId){ %>
     <title>Chischas!♟️</title>
-<% } %>
-<% if (gameId){ %>
-    <title>MATCH⚔️||Chischas!♟️</title>
+<% } else { %>
+    <title>MATCH⚔️ || Chischas!♟️</title>
 <% } %>
 
 <%- include('header') %>
@@ -11,23 +10,20 @@
 
 <% if (!gameId){ %>
 <script src="/javascript/chischas/conexion/crearLink.js" defer></script>
-<form id="inicio_partida">
-    <label>
-        <button id="crearLink">Crear link de partida</button>
-        <p id="link"> Aún no se ha generado ningún link de partida</p>
-    </label> <br>
-    <!-- 
-    <label>
-        <button id="joinGameButton">Unirse a una partida</button> <br>
-        <input type="text" id="gameIdInput" placeholder="Introduce el ID de la partida">
-    </label>
-    -->
-</form>
+<div id="inicio_partida" style="text-align: center; margin-top: 20px;">
+    <h1>¡Bienvenido a Chischas!♟️</h1>
+    <p>Comienza una nueva partida o comparte el enlace con tus amigos.</p>
+    <button id="crearLink" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Crear link de partida</button>
+    <p id="link" style="margin-top: 10px; font-style: italic; color: gray;">Aún no se ha generado ningún link de partida</p>
+</div>
 <% } %>
 
 <% if (gameId){ %>
-<p> Id de partida: <%=gameId %></p>
+<div style="text-align: center; margin-top: 20px;">
+    <h1>¡Partida en curso!⚔️</h1>
+    <p>Id de partida: <strong><%= gameId %></strong></p>
+</div>
 <%- include('juego') %>
 <% } %>
 
-<ul id="messages"></ul>
+<ul id="messages" style="list-style-type: none; padding: 0; margin-top: 20px; text-align: center;"></ul>
