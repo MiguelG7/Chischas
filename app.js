@@ -48,7 +48,7 @@ const logoutRouter = require('./routes/logout');
 const perfilRouter = require('./routes/perfil');
 
 app.use(session({
-    secret: 'mi-secreto',
+    secret: process.env.SECRET_SESSION,
     resave: false,
     saveUninitialized: false,
     cookie: {

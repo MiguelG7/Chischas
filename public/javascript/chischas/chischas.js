@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const player2Status = document.getElementById('player2-status');
             const playerCountElement = document.getElementById('player-count');
 
-            player1Status.textContent = `Blancas: ${playerNames[0] || 'Esperando...'}`;
-            player2Status.textContent = `Negras: ${playerNames[1] || 'Esperando...'}`;
+            player1Status.textContent = `${playerNames[0] || 'Esperando...'}`;
+            player2Status.textContent = `${playerNames[1] || 'Esperando...'}`;
             playerCountElement.textContent = `Número de jugadores en la partida: ${playerCount}`;
         };
 
