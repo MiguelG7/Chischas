@@ -56,6 +56,8 @@ Agradecimientos a los desarrolladores originales:
     ```properties
     TITLE_ENV="Chischás!"
     MONGO_URI="mongodb://localhost:3000/chischas"
+    TITLE_ENV="Chischás!"
+    SECRET_SESSION="escribe-aqui-tu-secreto"
     ```
 
 3. Ejecuta Chischas en local :D
