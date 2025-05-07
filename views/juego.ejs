@@ -8,12 +8,24 @@
             <div id="history" style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; padding: 10px; font-family: monospace;">
                 <!-- Each move will display the piece and destination -->
             </div>
+            
         </div>
         <div id="board-container">
             <div id="board1"></div>
         </div>
         <div id="game-status-container">
             <h3>Estado de la partida</h3>
+            <div id="player-info">
+                <div class="player">
+                    <img id="player1-picture" src="/uploads/default-profile.jpg" alt="Tu foto" width="50" height="50">
+                    <span id="player1-name">Tú</span>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player">
+                    <img id="player2-picture" src="/uploads/default-profile.jpg" alt="Foto del rival" width="50" height="50">
+                    <span id="player2-name"></span>
+                </div>
+            </div>
             <div id="player-status">
                 <p>Blancas:</p>
                 <p id="player1-status" hidden>Jugador 1: <span id="player1-color"></span></p>
@@ -41,18 +53,6 @@
     <div>
         ⚠️ Las partidas con USUARIOS NO REGISTRADOS no contarán en las estadísticas de los usuarios ni se guardaran en el historial de partidas.
         <br>
-    </div>
-
-    <div id="player-info">
-        <div class="player">
-            <img id="player1-picture" src="/uploads/default-profile.jpg" alt="Tu foto" width="50" height="50">
-            <span id="player1-name">Tú</span>
-        </div>
-        <div class="vs">VS</div>
-        <div class="player">
-            <img id="player2-picture" src="/uploads/default-profile.jpg" alt="Foto del rival" width="50" height="50">
-            <span id="player2-name"></span>
-        </div>
     </div>
 
     <div id="color-sorting-modal" class="hidden">
