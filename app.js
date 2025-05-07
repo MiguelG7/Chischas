@@ -101,14 +101,48 @@ const startGameTimer = (gameId) => {
     game.timers = { w: 300, b: 300 }; // 5 minutos por jugador
     game.turn = 'w'; // Asegurar que el turno inicial sea de las blancas
     clearInterval(game.timerInterval); // Asegurar que no haya temporizadores previos
-    game.timerInterval = setInterval(() => {
+    game.timerInterval = setInterval(async () => {
         const currentTurn = game.turn;
         if (game.timers[currentTurn] > 0) {
             game.timers[currentTurn] -= 1;
             io.to(gameId).emit("updateTimer", { timers: game.timers, turn: currentTurn }); // Emitir temporizadores y turno actual
         } else {
             clearInterval(game.timerInterval);
-            io.to(gameId).emit("gameOver", { result: `¡Tiempo agotado! Ganador: ${currentTurn === 'w' ? 'negras' : 'blancas'}` });
+
+            const winner = currentTurn === 'w' ? 'b' : 'w';
+            io.to(gameId).emit("gameOver", { result: `¡Tiempo agotado! Ganador: ${winner === 'w' ? 'blancas' : 'negras'}` });
+
+            // Guardar el resultado en la base de datos
+            try {
+                await Game.create({
+                    id: gameId,
+                    players: Object.entries(game.playerNames).map(([socketId, name]) => ({
+                        userId: game.playerIds[socketId],
+                        name,
+                        color: game.players[0] === socketId ? 'w' : 'b',
+                        profilePicture: game.playerPictures[socketId],
+                    })),
+                    result: { 
+                        winner: game.playerIds[game.players[winner === 'w' ? 0 : 1]], 
+                        draw: false 
+                    },
+                    moves: game.history.map(m => m.san),
+                });
+
+                if (game.players.length === 2) {
+                    const [player1, player2] = game.players;
+                    const winnerId = game.playerIds[game.players[winner === 'w' ? 0 : 1]];
+                    const loserId = game.playerIds[game.players[winner === 'w' ? 1 : 0]];
+
+                    if (winnerId && loserId) {
+                        await User.findByIdAndUpdate(winnerId, { $inc: { wins: 1, totalGames: 1 } });
+                        await User.findByIdAndUpdate(loserId, { $inc: { losses: 1, totalGames: 1 } });
+                    }
+                }
+            } catch (err) {
+                console.error("Error al guardar el resultado de la partida por tiempo:", err);
+            }
+
             delete games[gameId];
         }
     }, 1000);
@@ -246,6 +280,49 @@ io.on("connection", (socket) => {
 
         // Verificar si la partida ha terminado
         const chess = new Chess(game.fen);
+
+        // Verificar tablas por repetición triple
+        const fenCounts = {};
+        game.history.forEach((move) => {
+            fenCounts[move.fen] = (fenCounts[move.fen] || 0) + 1;
+        });
+
+        if (fenCounts[game.fen] >= 3) {
+            io.to(gameId).emit("gameOver", { result: "¡La partida terminó en tablas por repetición triple!" });
+
+            // Guardar el resultado en la base de datos
+            try {
+                await Game.create({
+                    id: gameId,
+                    players: Object.entries(game.playerNames).map(([socketId, name]) => ({
+                        userId: game.playerIds[socketId],
+                        name,
+                        color: game.players[0] === socketId ? 'w' : 'b',
+                        profilePicture: game.playerPictures[socketId],
+                    })),
+                    result: { draw: true },
+                    moves: game.history.map(m => m.san),
+                });
+
+                if (game.players.length === 2) {
+                    const [player1, player2] = game.players;
+
+                    const player1Id = game.playerIds[player1];
+                    const player2Id = game.playerIds[player2];
+
+                    if (player1Id && player2Id) {
+                        await User.findByIdAndUpdate(player1Id, { $inc: { draws: 1, totalGames: 1 } });
+                        await User.findByIdAndUpdate(player2Id, { $inc: { draws: 1, totalGames: 1 } });
+                    }
+                }
+            } catch (err) {
+                console.error("Error al guardar el resultado de tablas por repetición triple:", err);
+            }
+
+            delete games[gameId];
+            return;
+        }
+
         if (chess.isCheckmate()) {
             const winner = game.turn === 'b' ? 'w' : 'b'; // El turno opuesto gana
 
