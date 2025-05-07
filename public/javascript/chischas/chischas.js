@@ -216,6 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Enviar el movimiento al oponente
                             socket.emit("move", { gameId, move });
                         },
+                        onDragStart: (source, piece) => {
+                            // Permitir arrastrar solo las piezas del jugador
+                            if ((playerColor === 'w' && piece.search(/^b/) !== -1) || 
+                                (playerColor === 'b' && piece.search(/^w/) !== -1)) {
+                                return false;
+                            }
+                        }
                     });
 
                     // Mostrar el color asignado
