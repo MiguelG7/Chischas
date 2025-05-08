@@ -1,16 +1,4 @@
 {
-  "name": "@MiguelG7/mi-paquete",
-  "version": "1.0.0",
-  "description": "Mi paquete de ejemplo",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Sin tests\" && exit 0"
-  },
-  "author": "Tu Nombre",
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
