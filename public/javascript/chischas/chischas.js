@@ -222,6 +222,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 (playerColor === 'b' && piece.search(/^w/) !== -1)) {
                                 return false;
                             }
+
+                            // Verificar si la pieza tiene movimientos legales
+                            const legalMoves = chess.moves({ square: source, verbose: true });
+                            if (legalMoves.length === 0) {
+                                return false; // No permitir arrastrar la pieza
+                            }
+                        },
+                        onMouseoutSquare: () => {
+                            // Asegurar que la pieza se pueda soltar si no tiene movimientos legales
+                            board.position(chess.fen());
                         }
                     });
 
