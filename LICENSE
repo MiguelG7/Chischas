@@ -18,6 +18,8 @@ The Software incorporates the following third-party libraries:
 - chessboard.js by Chris Oakman (https://github.com/oakmac/chessboardjs), licensed under the MIT License.
 - Additional libraries from `node_modules`, which are subject to their respective licenses.
 
+Anyone is permitted to host, deploy, or modify this application, including for public or commercial use, as long as this license and the notices above are respected.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
