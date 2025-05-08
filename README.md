@@ -15,7 +15,7 @@
 
 
 
-<p><img src="https://media.licdn.com/dms/image/v2/D4D22AQFNFcFILreHWA/feedshare-shrink_2048_1536/B4DZarKA4CHQAo-/0/1746628251698?e=1749686400&v=beta&t=I5Ta6M2WO_-nstCr-dhK1uA-Aihw5jm6O-TrCAW6ZGU" alt="Demo" width="650"/></p>
+<p><img src="https://media.licdn.com/dms/image/v2/D4D22AQFNFcFILreHWA/feedshare-shrink_2048_1536/B4DZarKA4CHQAo-/0/1746628251698?e=1749686400&v=beta&t=I5Ta6M2WO_-nstCr-dhK1uA-Aihw5jm6O-TrCAW6ZGU" alt="Demo" width="3000"/></p>
 
 
 ## 🛠️ Tecnologías usadas
