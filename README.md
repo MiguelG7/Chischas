@@ -62,7 +62,7 @@ Agradecimientos a los desarrolladores originales:
 
 3. Ejecuta Chischas en local :D
     ```bash
-    npm app.js 
+    node app.js 
     ```
 
 
