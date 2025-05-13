@@ -1,0 +1,20 @@
+config:
+  target: "https://www.chischas.xyz"
+  phases:
+    - duration: 300  # 5 minutos de prueba
+      arrivalRate: 10  # Comienza con 10 usuarios por segundo
+      rampTo: 100      # Escala hasta 100 usuarios por segundo
+scenarios:
+  - name: "Usuarios navegando por toda la web"
+    flow:
+      - get:
+          url: "/"
+      - think: 1
+      - get:
+          url: "/chischas"
+      - think: 1
+      - get:
+          url: "/registro"
+      - think: 1
+      - get:
+          url: "/login"
