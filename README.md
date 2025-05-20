@@ -72,10 +72,6 @@ Agradecimientos a los desarrolladores originales:
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=MiguelG7&repo=Chischas&theme=github-compact&color=FFD311&line=FFD311&bg_color=000000" alt="Gráfico de actividad de Chischás" />
 </p>
 
-
-## 💬 Flujo de Chischás!
-![Flujo de Chischás!](/info/Flujo%20de%20Chischás.png)
-
 ## 📬 Contacto
 Si tienes cualquier consulta, puedes escribir a:
 - 📧 **miguel.gamboasanchez@usp.ceu.es**
