@@ -294,9 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sendChatButton.addEventListener('click', () => {
             const message = chatInput.value.trim();
             if (message) {
-                const senderName = userName || playerName; // Use playerName if userName is empty
-                socket.emit("chatMessage", { gameId, message, userName: senderName }); // Send message
-                chatInput.value = ''; // Clear input field
+                const senderName = userName || playerName; 
+                socket.emit("chatMessage", { gameId, message, userName: senderName }); 
+                chatInput.value = ''; 
             } else {
                 alert("El mensaje no puede estar vacío.");
             }

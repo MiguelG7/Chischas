@@ -4,7 +4,7 @@ const path = require('path');
 const router = express.Router();
 const User = require('../models/users');
 
-// Ruta para mostrar el perfil del usuario
+
 const Game = require('../models/partidas');
 
 // Configuración de multer para subir imágenes

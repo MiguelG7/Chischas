@@ -4,7 +4,7 @@ const User = require('../models/users');
 const bcrypt = require('bcrypt');
 
 router.get('/', (req, res) => {
-    res.render('login'); // Renderiza el formulario de login
+    res.render('login');
 });
 
 router.post('/', async (req, res) => {

@@ -4,7 +4,7 @@ const Game = require('../models/partidas');
 const User = require('../models/users');
 const { v4: uuidv4 } = require('uuid');
 
-// Ruta para crear una partida
+
 router.post('/crear', async (req, res) => {
   const { player1Id, player2Id } = req.body;
 

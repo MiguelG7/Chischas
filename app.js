@@ -53,8 +53,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-        httpOnly: true, // Prevent client-side access to the cookie
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === 'production', 
     }
 }));
 
@@ -73,7 +73,6 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// Configuración de rutas
 app.use('/', indexRouter);
 app.use('/chischas', chischasRouter);
 app.use('/registro', registroRouter);
@@ -271,6 +270,8 @@ io.on("connection", (socket) => {
             san: move.san,
         };
 
+        //ESTA PARTE FUE DE LAS MÁS LIOSAAAS HAHA
+
         game.history.push(moveWithPiece); // Guardar el movimiento serializado
         game.fen = move.after; // Actualizar el estado del tablero con el FEN resultante
         game.turn = game.turn === 'w' ? 'b' : 'w'; // Cambiar turno
@@ -354,13 +355,13 @@ io.on("connection", (socket) => {
                 await Game.create({
                     id: gameId,
                     players: Object.entries(game.playerNames).map(([socketId, name]) => ({
-                        userId: game.playerIds[socketId], // Use the correct userId from playerIds
+                        userId: game.playerIds[socketId], 
                         name,
                         color: game.players[0] === socketId ? 'w' : 'b',
                         profilePicture: game.playerPictures[socketId],
                     })),
                     result: { 
-                        winner: game.playerIds[game.players[winner === 'w' ? 0 : 1]], // Use the correct userId for the winner
+                        winner: game.playerIds[game.players[winner === 'w' ? 0 : 1]], 
                         draw: false 
                     },
                     moves: game.history.map(m => m.san),
@@ -403,7 +404,7 @@ io.on("connection", (socket) => {
                 await Game.create({
                     id: gameId,
                     players: Object.entries(game.playerNames).map(([socketId, name]) => ({
-                        userId: game.playerIds[socketId], // Use the correct userId from playerIds
+                        userId: game.playerIds[socketId],
                         name,
                         color: game.players[0] === socketId ? 'w' : 'b',
                         profilePicture: game.playerPictures[socketId],
@@ -451,7 +452,6 @@ io.on("connection", (socket) => {
             if (game.players.length === 0) {
                 delete games[gameId];
             } else {
-                // Emitir el estado actualizado del juego
                 updateGameStatus(gameId);
             }
         }
