@@ -8,7 +8,7 @@
     <a href="/chischas">Jugar</a>
 
     <% if (session.userId) { %>
-        <a href="/perfil"><%= session.userName %></a> <!-- Muestra el nombre del usuario -->
+        <a href="/perfil"><%= session.userName %></a>
     <% } else { %>
         <a href="/registro">Registro</a>
         <a href="/login">Log in</a>

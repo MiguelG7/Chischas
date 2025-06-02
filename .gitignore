@@ -1,10 +1,13 @@
-# Node modules
 node_modules/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs
+*.log
+yarn.lock
+package-lock.json
 
 # Editor/IDE files
 .vscode/
@@ -12,18 +15,12 @@ yarn-error.log*
 *.sublime-project
 *.sublime-workspace
 
-# OS generated files
+# OS
 .DS_Store
 Thumbs.db
 
 # Fotos de perfil
 public/uploads/*
 
-# Logs
-logs
-*.log
-yarn.lock
-package-lock.json
 
-# Archivo .gitignore
 .env

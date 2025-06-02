@@ -60,7 +60,7 @@ Agradecimientos a los desarrolladores originales:
     SECRET_SESSION="escribe-aqui-tu-secreto"
     ```
 
-3. Ejecuta Chischas en local :D
+3. Ejecuta Chischás! en local :D
     ```bash
     node app.js 
     ```

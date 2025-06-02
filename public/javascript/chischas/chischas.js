@@ -1,7 +1,7 @@
 import { Chess } from '/chessjs/dist/esm/chess.js';
 
-const socket = io(); // Inicializa el cliente de Socket.IO
-let playerColor = null; // Color del jugador
+const socket = io();
+let playerColor = null; 
 let chess = null; // Instancia de Chess.js
 let board = null; // Instancia de ChessBoard.js
 let gameId = null; // ID de la partida
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const messageModal = document.getElementById('message-modal');
                 if (!messageModal) {
                     console.error("Modal 'message-modal' no encontrado.");
-                    return resolve(); // Resolve immediately if modal is not found
+                    return resolve(); 
                 }
                 const messageContent = messageModal.querySelector('.message-content');
                 messageContent.textContent = message;
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Actualizar el historial de movimientos con pieza y destino
         socket.on("gameState", ({ history }) => {
             const historyElement = document.getElementById('history');
-            historyElement.innerHTML = ''; // Clear the history
+            historyElement.innerHTML = ''; 
             history.forEach((move, index) => {
                 const moveElement = document.createElement('p');
                 moveElement.textContent = `${index + 1}. ${move.piece} ${move.from} -> ${move.to}`;
