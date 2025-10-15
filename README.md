@@ -5,6 +5,9 @@
 
 [www.chischas.xyz](http://www.chischas.xyz) Actualmente no hosteada
 
+🎥 **Demo del proyecto:**  
+https://github.com/MiguelG7/Chischas/blob/main/public/uploads/Chischas%20Demo.mp4
+
 ![Tamaño](https://img.shields.io/github/repo-size/MiguelG7/Chischas?color=FFD311)
 ![GitHub top language](https://img.shields.io/github/languages/top/MiguelG7/Chischas?color=FFD311)
 
