@@ -5,9 +5,6 @@
 
 [www.chischas.xyz](http://www.chischas.xyz) Actualmente no hosteada
 
-🎥 **Demo del proyecto:**  
-https://github.com/MiguelG7/Chischas/blob/main/public/uploads/Chischas%20Demo.mp4
-
 ![Tamaño](https://img.shields.io/github/repo-size/MiguelG7/Chischas?color=FFD311)
 ![GitHub top language](https://img.shields.io/github/languages/top/MiguelG7/Chischas?color=FFD311)
 
@@ -22,6 +19,8 @@ https://github.com/MiguelG7/Chischas/blob/main/public/uploads/Chischas%20Demo.mp
 
 Adjuntaremos un LINK a la [`DOCUMENTACIÓN`](https://github.com/MiguelG7/Chischas/blob/main/Memoria_TFG_GISI_MIGUEL_GAMBOA_S%C3%81NCHEZ_Plataforma_Web_Ajedrez_final.pdf) aquí una vez esté finalizada ^^
 
+🎥 **Demo del proyecto:**  
+https://github.com/MiguelG7/Chischas/blob/main/public/uploads/Chischas%20Demo.mp4
 
 ## 🛠️ Tecnologías usadas
 
