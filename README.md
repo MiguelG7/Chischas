@@ -17,7 +17,7 @@
 
 <p><img src="https://raw.githubusercontent.com/MiguelG7/Chischas/refs/heads/main/public/uploads/image%20(6).png" alt="Demo" width="3000"/></p>
 
-Adjuntaremos un LINK a la [`DOCUMENTACIÓN`](https://github.com/MiguelG7/Chischas/blob/main/Memoria_TFG_GISI_MIGUEL_GAMBOA_S%C3%81NCHEZ_Plataforma_Web_Ajedrez_final.pdf) aquí una vez esté finalizada ^^
+Adjuntaremos un LINK a la [`DOCUMENTACIÓN`](https://github.com/MiguelG7/Chischas/blob/main/Memoria_TFG_Chischas.pdf) aquí una vez esté finalizada ^^
 
 🎥 **Demo del proyecto:**  
 https://github.com/MiguelG7/Chischas/blob/main/public/uploads/Chischas%20Demo.mp4
